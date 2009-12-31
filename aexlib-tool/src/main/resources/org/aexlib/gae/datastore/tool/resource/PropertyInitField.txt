@@ -1,0 +1,1 @@
+        ${property.name.lowercase} = ${property.name.uppercase}.newInstance(getEntityPropertyAccess());

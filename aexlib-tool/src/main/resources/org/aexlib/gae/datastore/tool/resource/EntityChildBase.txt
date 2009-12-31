@@ -1,0 +1,54 @@
+// generated code.
+//
+package ${package};
+
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.archtea.gae.datastore.*;
+import ${package}.version.*;
+${import.classes}
+
+${kind.annotation}
+public class ${entity.base.name} extends EntityChild${entity.factory.type}Base<${entity.base.name}, ${entity.base.parent.name}> {
+    public static final EntityChild${entity.factory.type}Factory<${entity.base.name}, ${entity.base.parent.name}> FACTORY =
+        EntityFactory.getEntityChild${entity.factory.type}Factory(${entity.base.name}.class,
+            new EntityCreator<${entity.base.name}>() {
+        public ${entity.base.name} newInstance() {
+            return new ${entity.base.name}();
+        }
+    });
+    
+    public static final EntityChildQueryFactory<${entity.base.name}, ${entity.base.parent.name}> QUERY =
+        EntityChildQueryFactory.getInstance(${entity.base.name}.class, FACTORY);
+
+${version.manager.field}
+
+    // Version Info field.
+${version.info.field}
+
+    // Property Info fields.
+${property.info.fields}
+
+    // Version field.
+${version.field}
+
+    // Property fields.
+${property.fields}
+
+    // Constructor. This is private to be created by FACTORY.
+    private ${entity.base.name}() {
+        setParentEntityBaseFactory(${entity.base.parent.name}.FACTORY);
+        // Initialize a version.
+${version.init.field}
+
+        // Initialize fields.
+${property.init.fields}
+
+${version.manager.init.field}
+    }
+
+${version.get.method}
+
+${property.get.methods}
+
+${property.set.methods}
+}

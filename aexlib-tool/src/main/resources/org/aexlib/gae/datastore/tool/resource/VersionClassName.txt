@@ -1,0 +1,1 @@
+${entity.base.name}_ver${version.number}

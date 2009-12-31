@@ -1,0 +1,1 @@
+    private final EntityProperty<${entity.base.name}, ${property.type}> ${property.name.lowercase};

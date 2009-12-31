@@ -1,0 +1,7 @@
+    private static final java.util.List<EntityVersionManager<${entity.base.name}>> VERSION_MANAGERS;
+    
+    static {
+        VERSION_MANAGERS = new java.util.ArrayList<EntityVersionManager<${entity.base.name}>>();
+${version.manager.init.instances}
+        sortVersionManagers(VERSION_MANAGERS);
+    }

@@ -1,0 +1,3 @@
+    public ${property.type} get${property.name.capital}() throws EntityNotFoundException {
+        return ${property.name.lowercase}.get();
+    }

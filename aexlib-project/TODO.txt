@@ -1,0 +1,19 @@
+x Create id/name class.
+x Change xxx.get to getXxxx
+x Change xxx.set to setXxxx
+x Change version.get() to getVersion
+x Transaction strategy. 'put' should be use to put data.
+x Entity relations.
+x  property keys.
+x List<X> should be queried by X
+x asIterable should be implemented in Query.
+x equal/hashCode should be implemented.
+x EntityPropertyAccess may not need PROPERTY_TYPE template.
+x field name should be not FEEDLINK but FEED_LINK
+
+- iterator may help to save memory for keylink collection.
+- Initial value stragegy.
+- parent-child
+- AncestorQuery should have a field for child entity.
+- Version should support from null(no version object) to become a version object.
+  But, this may no occur for the oposite case....

@@ -1,0 +1,39 @@
+<project name="archtea-gae" default="package">
+    <property environment="ENV"/>
+
+	<property name="version" value="0.1.0"/>
+	<property name="debug" value="true"/>
+    <property name="target.version" value="1.5"/>
+
+    <property name="build" value="build"/>
+    <property name="classes" value="${build}/classes"/>
+    <property name="dest" value="${ENV.HOME}/java/archtea-gae/lib/"/>
+
+    <target name="init">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${classes}"/>
+        <mkdir dir="${dest}"/>
+    </target>
+        
+    <target name="clean">
+        <delete dir="${build}"/>
+    </target>
+
+    <target name="compile">
+        <javac srcdir="src/main/java" destdir="${classes}"
+        	includes="com/archtea/gae/datastore/**/*.java"
+            debug="${debug}" target="${target.version}">
+        	<classpath>
+        		<fileset dir="${ENV.HOME}/java/eclipse/plugins/com.google.appengine.eclipse.sdkbundle.1.3.0_1.3.0.v200912141120/appengine-java-sdk-1.3.0/"
+        		    includes="**/appengine-api-1.0-sdk-1.3.0.jar, **/appengine-api-labs-1.3.0.jar"/>
+        	</classpath>
+        </javac>
+    </target>
+
+    <target name="package" depends="init, compile">
+        <jar destfile="${dest}/archtea-gae-${version}.jar" basedir="${classes}"/>
+    </target>
+    
+    <target name="all" depends="package">
+    </target>
+</project>
