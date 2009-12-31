@@ -24,9 +24,9 @@ import org.aexlib.gae.sample.server.AttachedObject;
 
 import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
-import org.aexlib.gae.tool.tool.anno.KeyTypeValue;
-import org.aexlib.gae.tool.tool.anno.Kind;
-import org.aexlib.gae.tool.tool.anno.Property;
+import org.aexlib.gae.tool.anno.KeyTypeValue;
+import org.aexlib.gae.tool.anno.Kind;
+import org.aexlib.gae.tool.anno.Property;
 import org.aexlib.gae.tool.anno.Version;
 
 

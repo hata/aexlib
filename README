@@ -3,4 +3,20 @@ README for aexlib
 This library provides typesafe access for datastore on App Engine / Java.
 
 
+Now, this only support the following ways.
+1. Create a definition and CodeGenerator classes.
+
+  Please check under the following directory
+  for definition files.
+
+  http://github.com/hata/aexlib/tree/master/aexlib-sample/src/main/java/org/aexlib/gae/sample/server/def/
+
+2. Run the generator with output directory.
+  CodeGenerator outputs the following classes in this example.
+
+  http://github.com/hata/aexlib/tree/master/aexlib-sample/src/main/java/org/aexlib/gae/sample/server/entity/
+
+After this, use the generated classes and aexlib-datastore-version.jar
+with App Engine / Java.
+
 

@@ -2,11 +2,6 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>aexlib</artifactId>
-    <groupId>org.aexlib</groupId>
-    <version>${aexlib-version}</version>
-  </parent>
   <groupId>org.aexlib</groupId>
   <artifactId>aexlib-tool</artifactId>
   <version>${aexlib-version}</version>
@@ -50,15 +45,8 @@
 
   </dependencies>
 
-  <properties>
-    <!--
-        Specify AppEngine version for your project.
-    -->
-    <gae.version>1.3.0</gae.version>
-  </properties>
-
   <build>
-    <finalName>test</finalName>
+    <finalName>aexlib-tool</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -78,4 +66,13 @@
       </plugin>
     </plugins>
   </build>
+
+  <properties>
+    <!--
+        Specify AppEngine version for your project.
+    -->
+    <gae.version>1.3.0</gae.version>
+    <aexlib-version>0.1.0-SNAPSHOT</aexlib-version>
+  </properties>
+
 </project>
