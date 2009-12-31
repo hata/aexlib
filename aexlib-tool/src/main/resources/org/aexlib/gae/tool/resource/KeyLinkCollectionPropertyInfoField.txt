@@ -1,0 +1,2 @@
+    public static final EntityIndexableCollectionPropertyInfo<${entity.base.name}, ${collection.type}, ${property.type}> ${property.name.uppercase} =
+        EntityPropertyInfoFactory.getKeyLinkCollectionPropertyInfo(${entity.base.name}.class, ${collection.type}.class, ${property.type}.class, ${key.link.type}.FACTORY, "${property.name}");

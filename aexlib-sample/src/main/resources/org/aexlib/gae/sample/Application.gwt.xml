@@ -1,0 +1,12 @@
+<module rename-to='aexlib_gae'>
+
+      <!-- Inherit the core Web Toolkit stuff.                        -->
+      <inherits name='com.google.gwt.user.User'/>   	
+    
+      <!--  inherit css based theme -->
+      <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+
+      <!-- Specify the app entry point class.                         -->
+      <entry-point class='org.aexlib.gae.sample.client.Application'/>
+    
+</module>

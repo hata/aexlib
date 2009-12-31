@@ -1,0 +1,27 @@
+package ${package}.version;
+
+import org.aexlib.gae.datastore.*;
+import ${package}.*;
+
+public class ${version.class.name} implements EntityVersionManager<${entity.base.name}> {
+    public static ${version.class.name} newInstance() {
+        return new ${version.class.name}();
+    }
+
+    public long getVersion() {
+        return ${version.number};
+    }
+
+    public void init(EntityBasePropertyAccess<${entity.base.name}> newEntity) {
+        // TODO: Auto-Generated. Edit for initializing entity if it is required.
+    }
+
+    public void up(EntityBasePropertyAccess<${entity.base.name}> entity) {
+        // TODO: Edit for upgrade if it is required.
+    }
+
+    public void down(EntityBasePropertyAccess<${entity.base.name}> entity) {
+        // TODO: Edit for downgrade if it is required.
+    }
+}
+

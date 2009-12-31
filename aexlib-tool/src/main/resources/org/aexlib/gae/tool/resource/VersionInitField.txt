@@ -1,0 +1,1 @@
+        ${version.name.lowercase} = ${version.name.uppercase}.newInstance(getEntityPropertyAccess());
