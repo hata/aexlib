@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+  <id>bin</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <baseDirectory>aexlib-${aexlib-version}</baseDirectory>
+  <dependencySets>
+    <dependencySet>
+      <unpack>false</unpack>
+      <scope>runtime</scope>
+      <outputDirectory>/</outputDirectory>
+      <excludes>
+        <exclude>*appengine*</exclude>
+      </excludes>
+    </dependencySet>
+  </dependencySets>
+  <files>
+    <file>
+      <source>../README</source>
+      <destName>README.txt</destName>
+    </file>
+    <file>
+      <source>../LICENSE</source>
+      <destName>LICENSE.txt</destName>
+    </file>
+  </files>
+</assembly>
+
