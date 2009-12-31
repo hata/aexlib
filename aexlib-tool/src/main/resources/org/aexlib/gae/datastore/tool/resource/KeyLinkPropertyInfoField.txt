@@ -1,2 +1,0 @@
-    public static final EntityIndexablePropertyInfo<${entity.base.name}, ${property.type}> ${property.name.uppercase} =
-        EntityPropertyInfoFactory.getKeyLinkPropertyInfo(${entity.base.name}.class, ${property.type}.class, ${key.link.type}.FACTORY, "${property.name}");

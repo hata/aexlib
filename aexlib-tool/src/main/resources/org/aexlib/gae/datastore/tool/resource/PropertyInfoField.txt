@@ -1,2 +1,0 @@
-    public static final EntityPropertyInfo<${entity.base.name}, ${property.type}> ${property.name.uppercase} =
-        EntityPropertyInfoFactory.get${property.indexable}PropertyInfo(${entity.base.name}.class, ${property.type}.class, "${property.name}");

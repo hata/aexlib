@@ -1,4 +1,0 @@
-    public ${entity.base.name} set${property.name.capital}(final ${collection.type}<${property.type}> value) throws EntityNotFoundException {
-        ${property.name.lowercase}.set(value);
-        return this;
-    }

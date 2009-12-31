@@ -1,3 +1,0 @@
-    public Long get${version.name.capital}() throws EntityNotFoundException {
-        return ${version.name.lowercase}.get();
-    }

@@ -1,1 +1,0 @@
-    private final EntityProperty<${entity.base.name}, Long> ${version.name.lowercase};

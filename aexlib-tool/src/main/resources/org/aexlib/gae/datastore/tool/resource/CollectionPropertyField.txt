@@ -1,1 +1,0 @@
-    private final EntityCollectionProperty<${entity.base.name}, ${collection.type}, ${property.type}> ${property.name.lowercase};
