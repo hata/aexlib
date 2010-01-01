@@ -20,9 +20,9 @@ package org.aexlib.gae.sample.server.def;
 import java.io.File;
 import java.io.IOException;
 
-import org.aexlib.gae.tool.EntityBaseCodeGenerator;
+import org.aexlib.gae.tool.impl.CodeGeneratorImpl;
 
-public class CodeGenerator extends EntityBaseCodeGenerator {
+public class CodeGenerator extends CodeGeneratorImpl {
     private String outDir;
 
     public static void main(String[] args) throws Exception {

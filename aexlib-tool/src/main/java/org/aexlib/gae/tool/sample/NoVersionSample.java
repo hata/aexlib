@@ -2,10 +2,9 @@
 // x
 package org.aexlib.gae.tool.sample;
 
-import org.aexlib.gae.tool.sample.version.*;
-
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import org.aexlib.gae.datastore.*;
+import org.aexlib.gae.tool.sample.version.*;
 import org.aexlib.gae.datastore.anno.Kind;
 
 
@@ -65,6 +64,12 @@ public class NoVersionSample extends EntityNameBase<NoVersionSample> {
         name.set(value);
         return this;
     }
+
+    public NoVersionSample removeName() throws EntityNotFoundException {
+        name.remove();
+        return this;
+    }
+    
 
 }
 

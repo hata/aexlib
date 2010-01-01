@@ -2,10 +2,9 @@
 // x
 package org.aexlib.gae.tool.sample;
 
-import org.aexlib.gae.tool.sample.version.*;
-
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import org.aexlib.gae.datastore.*;
+import org.aexlib.gae.tool.sample.version.*;
 import org.aexlib.gae.datastore.anno.Kind;
 
 
@@ -91,10 +90,22 @@ public class ParentSample extends EntityNameBase<ParentSample> {
         children.set(value);
         return this;
     }
+
+    public ParentSample removeChildren() throws EntityNotFoundException {
+        children.remove();
+        return this;
+    }
+    
     public ParentSample setChild(final Sample value) throws EntityNotFoundException {
         child.set(value);
         return this;
     }
+
+    public ParentSample removeChild() throws EntityNotFoundException {
+        child.remove();
+        return this;
+    }
+    
 
 }
 

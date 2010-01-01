@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.aexlib.gae.tool;
+package org.aexlib.gae.tool.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +31,7 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.aexlib.gae.tool.CodeGenerator;
 import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.Kind;
@@ -48,7 +50,7 @@ import org.aexlib.gae.tool.anno.Property;
 import org.aexlib.gae.tool.anno.Version;
 
 
-public abstract class EntityBaseCodeGenerator {
+public class CodeGeneratorImpl implements CodeGenerator {
     private static final String DEFAULT_CHARSET = "utf-8";
     private static final String RET = System.getProperty("line.separator") != null ? System.getProperty("line.separator") : "\n";
     
@@ -145,12 +147,16 @@ public abstract class EntityBaseCodeGenerator {
     private String versionClassesPath;
 
     private static final InvocationHandler handler = new NullInvocationHandler();
+    
+    private File outputDir = null;
+    private String rootPackage = null;
+    private ArrayList<Class<?>> definitionList = new ArrayList<Class<?>>();
 
     private void logMessage(String message) {
         System.out.println(message);
     }
     
-    public void generate() throws IOException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public void generate() throws Exception {
         initCollectionTypeSet();
         loadTemplate();
         createPackageDir(getOutputSourceDir());
@@ -163,12 +169,30 @@ public abstract class EntityBaseCodeGenerator {
         
         logMessage("Done.");
     }
-    
-    protected abstract File getOutputSourceDir() throws IOException;
 
-    protected abstract String getGeneratedClassPackage();
+    public void setOutputDir(File dir) {
+        outputDir = dir;
+    }
+
+    public void setRootPackage(String rootPackage) {
+        this.rootPackage = rootPackage;
+    }
+
+    public void addDefinition(Class<?> ... clazz) {
+        definitionList.addAll(Arrays.asList(clazz));
+    }
     
-    protected abstract Class<?>[] getEntityDefinitions();
+    protected File getOutputSourceDir() throws IOException {
+        return outputDir;
+    }
+
+    protected String getGeneratedClassPackage() {
+        return rootPackage;
+    }
+    
+    protected Class<?>[] getEntityDefinitions() {
+        return definitionList.toArray(new Class<?>[definitionList.size()]);
+    }
     
 
     protected void loadTemplate() throws IOException {

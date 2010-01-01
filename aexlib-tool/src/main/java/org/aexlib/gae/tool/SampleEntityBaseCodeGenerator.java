@@ -20,7 +20,7 @@ package org.aexlib.gae.tool;
 import java.io.File;
 import java.io.IOException;
 
-public class SampleEntityBaseCodeGenerator extends EntityBaseCodeGenerator {
+public class SampleEntityBaseCodeGenerator {
     private final String outputDir;
 
     public static void main(String[] args) throws Exception {
@@ -31,8 +31,15 @@ public class SampleEntityBaseCodeGenerator extends EntityBaseCodeGenerator {
         this.outputDir = outputDir;
     }
 
-    @Override
-    protected Class<?>[] getEntityDefinitions() {
+    void generate() throws Exception {
+        CodeGenerator generator = CodeGeneratorFactory.getInstance();
+        generator.setOutputDir(getOutputSourceDir());
+        generator.setRootPackage(getGeneratedClassPackage());
+        generator.addDefinition(getEntityDefinitions());
+        generator.generate();
+    }
+
+    private Class<?>[] getEntityDefinitions() {
         return new Class<?>[]{
                 ParentSample.class,
                 Sample.class,
@@ -40,13 +47,11 @@ public class SampleEntityBaseCodeGenerator extends EntityBaseCodeGenerator {
                 };
     }
 
-    @Override
-    protected String getGeneratedClassPackage() {
+    private String getGeneratedClassPackage() {
         return this.getClass().getPackage().getName() + ".sample";
     }
 
-    @Override
-    protected File getOutputSourceDir() throws IOException {
+    private File getOutputSourceDir() throws IOException {
         return new File(outputDir);
     }
 

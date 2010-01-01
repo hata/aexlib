@@ -2,3 +2,9 @@
         ${property.name.lowercase}.set(value);
         return this;
     }
+
+    public ${entity.base.name} remove${property.name.capital}() throws EntityNotFoundException {
+        ${property.name.lowercase}.remove();
+        return this;
+    }
+    
