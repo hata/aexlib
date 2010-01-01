@@ -46,6 +46,10 @@ public class EntityKeyLinkPropertyImpl<ENTITY extends EntityBase<ENTITY>, PROPER
     public void set(PROPERTY_TYPE value) throws EntityNotFoundException {
         entityInstance.setProperty(propertyName, value.getKey());
     }
+
+    public void remove() throws EntityNotFoundException {
+        entityInstance.removeProperty(propertyName);
+    }
     
     public String getName() {
         return propertyName;

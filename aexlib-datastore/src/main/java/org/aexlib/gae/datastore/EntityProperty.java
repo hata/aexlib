@@ -31,5 +31,6 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 public interface EntityProperty<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE> {
     public PROPERTY_TYPE get() throws EntityNotFoundException;
     public void set(PROPERTY_TYPE value) throws EntityNotFoundException;
+    public void remove() throws EntityNotFoundException;
     public String getName();
 }

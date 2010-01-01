@@ -107,7 +107,12 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
             throw new NotSupportedTypeException("Cannot convert Collection value to store data. Class is " + value.getClass());
         }
     }
+
+    public void remove() throws EntityNotFoundException {
+        entityInstance.removeProperty(propertyName);
+    }
     
+
     public String getName() {
         return propertyName;
     }

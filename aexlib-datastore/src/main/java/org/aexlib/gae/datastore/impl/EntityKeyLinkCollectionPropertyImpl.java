@@ -84,6 +84,11 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
         entityInstance.setProperty(propertyName, keys);
     }
 
+    public void remove() throws EntityNotFoundException {
+        entityInstance.removeProperty(propertyName);
+    }
+    
+
     public String getName() {
         return propertyName;
     }

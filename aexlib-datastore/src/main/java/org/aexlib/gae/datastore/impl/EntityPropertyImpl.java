@@ -68,6 +68,10 @@ public class EntityPropertyImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE
         }
     }
     
+    public void remove() throws EntityNotFoundException {
+        entityInstance.removeProperty(propertyName);
+    }
+    
     public String getName() {
         return propertyName;
     }
