@@ -18,6 +18,7 @@
 package org.aexlib.gae.datastore;
 
 import java.util.Iterator;
+import java.util.List;
 
 
 
@@ -25,10 +26,14 @@ public interface EntityQuery<ENTITY extends EntityBase<ENTITY>> extends Iterable
     public <PROPERTY_TYPE> EntityQuery<ENTITY> filter(EntityPropertyFilter<ENTITY, PROPERTY_TYPE> filter);
     public EntityQuery<ENTITY> sort(EntityPropertySorter<ENTITY> sort);
 
+    public EntityQuery<ENTITY> limit(int limit);
+    public EntityQuery<ENTITY> offset(int offset);
+    public EntityQuery<ENTITY> chunkSize(int chunkSize);
+    public EntityQuery<ENTITY> prefetchSize(int prefetchSize);
+
     public Iterable<ENTITY> asIterable();
-    public Iterable<ENTITY> asIterable(EntityQueryFetchOptions options);
     public Iterator<ENTITY> asIterator();
-    public Iterator<ENTITY> asIterator(EntityQueryFetchOptions options);
+    public List<ENTITY> asList();
     
     public ENTITY asSingleEntity();
     public int countEntities();

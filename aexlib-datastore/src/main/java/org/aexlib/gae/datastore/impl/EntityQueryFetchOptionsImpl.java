@@ -17,8 +17,8 @@
  */
 package org.aexlib.gae.datastore.impl;
 
-import org.aexlib.gae.datastore.EntityQueryFetchOptions;
 
+import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.FetchOptions;
 
 public class EntityQueryFetchOptionsImpl extends EntityQueryFetchOptions {
@@ -32,6 +32,7 @@ public class EntityQueryFetchOptionsImpl extends EntityQueryFetchOptions {
         return options;
     }
     
+    @Override
     public EntityQueryFetchOptions limit(int limit) {
         if (options != null) {
             options.limit(limit);
@@ -41,6 +42,7 @@ public class EntityQueryFetchOptionsImpl extends EntityQueryFetchOptions {
         return this;
     }
 
+    @Override
     public EntityQueryFetchOptions offset(int offset) {
         if (options != null) {
             options.offset(offset);
@@ -50,11 +52,32 @@ public class EntityQueryFetchOptionsImpl extends EntityQueryFetchOptions {
         return this;
     }
     
+    @Override
     public EntityQueryFetchOptions chunkSize(int chunkSize) {
         if (options != null) {
-            options.offset(chunkSize);
+            options.chunkSize(chunkSize);
         } else {
             options = FetchOptions.Builder.withChunkSize(chunkSize);
+        }
+        return this;
+    }
+
+    @Override
+    public EntityQueryFetchOptions prefetchSize(int prefetchSize) {
+        if (options != null) {
+            options.prefetchSize(prefetchSize);
+        } else {
+            options = FetchOptions.Builder.withPrefetchSize(prefetchSize);
+        }
+        return this;
+    }
+
+    @Override
+    public EntityQueryFetchOptions cursor(Cursor cursor) {
+        if (options != null) {
+            options.cursor(cursor);
+        } else {
+            options = FetchOptions.Builder.withCursor(cursor);
         }
         return this;
     }

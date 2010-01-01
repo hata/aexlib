@@ -49,7 +49,8 @@ public class EntityCollectionPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>,
 
     public EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
         return new EntityCollectionPropertyImpl<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>(
-                entityInstance, collectionClass, typeClass, propertyName, DataTypeTranslatorFactory.getUnindexedTranslator(typeClass));
+                entityInstance, collectionClass, typeClass, propertyName,
+                DataTypeTranslatorFactory.getUnindexedTranslator(typeClass), false);
     }
 
     public String getName() {

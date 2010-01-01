@@ -26,7 +26,7 @@ public class EntityVersionPropertyImpl<ENTITY extends EntityBase<ENTITY>> extend
         EntityPropertyImpl<ENTITY, Long> {
 
     EntityVersionPropertyImpl(EntityBasePropertyAccess<ENTITY> entityInstance, String propertyName, long version) {
-        super(entityInstance, Long.class, propertyName, null);
+        super(entityInstance, Long.class, propertyName, null, true);
         entityInstance.setVersion(propertyName, version);
     }
 

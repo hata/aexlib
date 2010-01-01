@@ -61,6 +61,7 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
     private String versionPropertyName;
     private long currentVersion;
     private Map<String, Object> initialProperties;
+    private Map<String, Object> initialUnindexedProperties;
     
     private List<EntityVersionManager<ENTITY>> versionManagerList;
     private EntityVersionManager<ENTITY> currentVersionManager;
@@ -125,6 +126,12 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
                     entity.setProperty(entry.getKey(), entry.getValue());
                 }
                 initialProperties = null;
+            }
+            if (initialUnindexedProperties != null) {
+                for (Map.Entry<String, Object> entry : initialUnindexedProperties.entrySet()) {
+                    entity.setUnindexedProperty(entry.getKey(), entry.getValue());
+                }
+                initialUnindexedProperties = null;
             }
         }
     }
@@ -337,5 +344,46 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
             }
             initialProperties.put(property, value);
         }
+        
+        public void setUnindexedProperty(String property, Object value) throws EntityNotFoundException {
+            try {
+                final DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+                final Transaction tx = ds.getCurrentTransaction(null);
+                final Entity entity = getEntity(ds, tx);
+                if (entity != null) {
+                    entity.setUnindexedProperty(property, value);
+                    return;
+                } else {
+                    // If the key is id, Key object is not created until a new creation.
+                    // So, entity may be null if the object is not created yet.
+                }
+            } catch (EntityNotFoundException e) {
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest("No entity object found. An unindexed name property will be created." + e);
+                }
+                // If EntityNotFoundException is thrown, name key exists and the
+                // entity is not created. So, it becomes to initialized process.
+            }
+            if (initialUnindexedProperties == null) {
+                initialUnindexedProperties = new HashMap<String, Object>();
+            }
+            initialUnindexedProperties.put(property, value);
+        }
+
+        public void removeProperty(String property) throws EntityNotFoundException {
+            final DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+            final Transaction tx = ds.getCurrentTransaction(null);
+            try {
+                final Entity entity = getEntity(ds, tx);
+                if (entity != null) {
+                    entity.removeProperty(property);
+                }
+            } catch (EntityNotFoundException e) {
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest("No entity object found. Removed a property for non-created entity." + e);
+                }
+            }
+        }
+
     }
 }

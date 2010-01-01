@@ -20,7 +20,6 @@ package org.aexlib.gae.datastore.impl;
 import java.util.Iterator;
 
 import org.aexlib.gae.LocalDataStoreTestCase;
-import org.aexlib.gae.datastore.EntityQueryFetchOptions;
 import org.aexlib.gae.datastore.impl.EntityQueryImpl;
 
 
@@ -127,7 +126,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
 
     public void testAsIterableLimit() {
         int i = 0;
-        for (TestDocument doc : query.sort(TestDocument.TITLE.asc()).asIterable(EntityQueryFetchOptions.Factory.withLimit(3))) {
+        for (TestDocument doc : query.sort(TestDocument.TITLE.asc()).limit(3).asIterable()) {
             assertEquals(docs[i++].getKey(), doc.getKey());
         }
         assertEquals(3, i);
@@ -135,7 +134,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
 
     public void testAsIterableLimitOffset() {
         int i = 2;
-        for (TestDocument doc : query.sort(TestDocument.TITLE.asc()).asIterable(EntityQueryFetchOptions.Factory.withLimit(3).offset(2))) {
+        for (TestDocument doc : query.sort(TestDocument.TITLE.asc()).limit(3).offset(2).asIterable()) {
             assertEquals(docs[i++].getKey(), doc.getKey());
         }
         assertEquals(5, i);
@@ -152,7 +151,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
 
     public void testAsIteratorLimit() {
         int i = 0;
-        Iterator<TestDocument> docIt = query.sort(TestDocument.TITLE.asc()).asIterator(EntityQueryFetchOptions.Factory.withLimit(2));
+        Iterator<TestDocument> docIt = query.sort(TestDocument.TITLE.asc()).limit(2).asIterator();
         while (docIt.hasNext()) {
             assertEquals(docs[i++].getKey(), docIt.next().getKey());
         }
@@ -161,7 +160,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
 
     public void testAsIteratorLimitOffset() {
         int i = 3;
-        Iterator<TestDocument> docIt = query.sort(TestDocument.TITLE.asc()).asIterator(EntityQueryFetchOptions.Factory.withLimit(2).offset(3));
+        Iterator<TestDocument> docIt = query.sort(TestDocument.TITLE.asc()).limit(2).offset(3).asIterator();
         while (docIt.hasNext()) {
             assertEquals(docs[i++].getKey(), docIt.next().getKey());
         }

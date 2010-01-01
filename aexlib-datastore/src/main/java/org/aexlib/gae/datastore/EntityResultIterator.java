@@ -1,7 +1,7 @@
 /*
  * $Id$
  * 
- * Copyright 2009 Hiroki Ata
+ * Copyright 2009-${year} Hiroki Ata
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,10 @@
  */
 package org.aexlib.gae.datastore;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
+import java.util.Iterator;
 
-public interface EntityBasePropertyAccess<ENTITY extends EntityBase<ENTITY>> {
-    public void setVersion(String propertyName, long currentVersion);
+import com.google.appengine.api.datastore.Cursor;
 
-    public Object getProperty(String property) throws EntityNotFoundException;
-
-    public void setProperty(String property, Object value) throws EntityNotFoundException;
-
-    public void setUnindexedProperty(String property, Object value) throws EntityNotFoundException;
-
-    public void removeProperty(String property) throws EntityNotFoundException;
+public interface EntityResultIterator<T> extends Iterator<T> {
+    Cursor getCursor();
 }

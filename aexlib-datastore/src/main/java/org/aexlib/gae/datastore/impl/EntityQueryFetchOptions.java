@@ -15,12 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.aexlib.gae.datastore;
+package org.aexlib.gae.datastore.impl;
 
-import org.aexlib.gae.datastore.impl.EntityQueryFetchOptionsImpl;
+import com.google.appengine.api.datastore.Cursor;
 
-public abstract class EntityQueryFetchOptions {
-    public static class Factory {
+
+abstract class EntityQueryFetchOptions {
+    static class Factory {
         public static EntityQueryFetchOptions withLimit(int limit) {
             return new EntityQueryFetchOptionsImpl().limit(limit);
         }
@@ -32,10 +33,20 @@ public abstract class EntityQueryFetchOptions {
         public static EntityQueryFetchOptions withChunkSize(int chunkSize) {
             return new EntityQueryFetchOptionsImpl().chunkSize(chunkSize);
         }
+        
+        public static EntityQueryFetchOptions withPrefetchSize(int prefetchSize) {
+            return new EntityQueryFetchOptionsImpl().prefetchSize(prefetchSize);
+        }
+
+        public static EntityQueryFetchOptions withCursor(Cursor cursor) {
+            return new EntityQueryFetchOptionsImpl().cursor(cursor);
+        }
     }
 
     public abstract EntityQueryFetchOptions limit(int limit);
     public abstract EntityQueryFetchOptions offset(int offset);
     public abstract EntityQueryFetchOptions chunkSize(int limit);
+    public abstract EntityQueryFetchOptions prefetchSize(int limit);
+    public abstract EntityQueryFetchOptions cursor(Cursor cursor);
     
 }

@@ -37,13 +37,15 @@ public class EntityPropertyImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE
     private final EntityBasePropertyAccess<ENTITY> entityInstance;
     private final Class<PROPERTY_TYPE> propertyClass;
     private final DataTypeTranslator translator;
+    private final boolean indexable;
 
 
-    EntityPropertyImpl(EntityBasePropertyAccess<ENTITY> entityInstance, Class<PROPERTY_TYPE> propertyClass, String propertyName, DataTypeTranslator translator) {
+    EntityPropertyImpl(EntityBasePropertyAccess<ENTITY> entityInstance, Class<PROPERTY_TYPE> propertyClass, String propertyName, DataTypeTranslator translator, boolean indexable) {
         this.entityInstance = entityInstance;
         this.propertyName = propertyName;
         this.propertyClass = propertyClass;
         this.translator = translator;
+        this.indexable = indexable;
     }
     
     public PROPERTY_TYPE get() throws EntityNotFoundException {
@@ -59,7 +61,11 @@ public class EntityPropertyImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE
         if (translator != null && value != null) {
             object = translator.toStoreType(value);
         }
-        entityInstance.setProperty(propertyName, object);
+        if (indexable) {
+            entityInstance.setProperty(propertyName, object);
+        } else {
+            entityInstance.setUnindexedProperty(propertyName, object);
+        }
     }
     
     public String getName() {

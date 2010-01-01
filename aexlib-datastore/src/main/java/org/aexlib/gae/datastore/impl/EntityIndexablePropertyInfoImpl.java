@@ -45,7 +45,7 @@ public class EntityIndexablePropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, 
     @Override
     public EntityProperty<ENTITY, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
         return new EntityPropertyImpl<ENTITY, PROPERTY_TYPE>(
-                entityInstance, getPropertyType(), getName(), DataTypeTranslatorFactory.getIndexableTranslator(getPropertyType()));
+                entityInstance, getPropertyType(), getName(), DataTypeTranslatorFactory.getIndexableTranslator(getPropertyType()), true);
     }
 
     public EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> equal(PROPERTY_TYPE value) {

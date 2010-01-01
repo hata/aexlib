@@ -87,7 +87,7 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
         EntityPropertyImpl<EntityPropertyTest, String> prop =
             new EntityPropertyImpl<EntityPropertyTest, String>(
                     test.getEntityBasePropertyAccess(), String.class, "stringProperty",
-                    DataTypeTranslatorFactory.getUnindexedTranslator(String.class));
+                    DataTypeTranslatorFactory.getUnindexedTranslator(String.class), true);
         prop.set("testString");
         test.put();
         assertEquals("testString", prop.get());
@@ -97,7 +97,7 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
         EntityPropertyImpl<EntityPropertyTest, ShortBlob> prop =
             new EntityPropertyImpl<EntityPropertyTest, ShortBlob>(
                     test.getEntityBasePropertyAccess(), ShortBlob.class, "shortBlobProperty",
-                    DataTypeTranslatorFactory.getUnindexedTranslator(ShortBlob.class));
+                    DataTypeTranslatorFactory.getUnindexedTranslator(ShortBlob.class), true);
         prop.set(new ShortBlob("testShortBlob".getBytes()));
         test.put();
         assertEquals("testShortBlob", new String(prop.get().getBytes()));
@@ -107,7 +107,7 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
         EntityPropertyImpl<EntityPropertyTest, Boolean> prop =
             new EntityPropertyImpl<EntityPropertyTest, Boolean>(
                     test.getEntityBasePropertyAccess(), Boolean.class, "booleanProperty",
-                    DataTypeTranslatorFactory.getUnindexedTranslator(Boolean.class));
+                    DataTypeTranslatorFactory.getUnindexedTranslator(Boolean.class), true);
         prop.set(true);
         test.put();
         assertTrue(prop.get());
@@ -186,12 +186,12 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
         test.putIfAbsent();
         EntityPropertyImpl<EntityPropertyTest, SerializedObject> prop = 
             new EntityPropertyImpl<EntityPropertyTest, SerializedObject>(
-                    test.getEntityBasePropertyAccess(), SerializedObject.class, "serializable", SerializableDataTypeTranslatorImpl.getInstance(SerializedObject.class));
+                    test.getEntityBasePropertyAccess(), SerializedObject.class, "serializable", SerializableDataTypeTranslatorImpl.getInstance(SerializedObject.class), true);
 
         prop.set(value);
         test.put();
         prop = new EntityPropertyImpl<EntityPropertyTest, SerializedObject>(
-                test.getEntityBasePropertyAccess(), SerializedObject.class, "serializable", SerializableDataTypeTranslatorImpl.getInstance(SerializedObject.class));
+                test.getEntityBasePropertyAccess(), SerializedObject.class, "serializable", SerializableDataTypeTranslatorImpl.getInstance(SerializedObject.class), true);
 
         assertEquals(value, SerializedObject.class.cast(prop.get()));
     }
@@ -226,7 +226,7 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
         test = EntityPropertyTest.FACTORY.initInstance("test1");
         return new EntityPropertyImpl<EntityPropertyTest, T>(
                     test.getEntityBasePropertyAccess(), typeClass, name,
-                    DataTypeTranslatorFactory.getUnindexedTranslator(typeClass));
+                    DataTypeTranslatorFactory.getUnindexedTranslator(typeClass), true);
     }
     
     private static class SerializedObject implements Serializable {

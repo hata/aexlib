@@ -41,15 +41,17 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
     private final Class<COLLECTION_TYPE> collectionClass;
     private final Class<PROPERTY_TYPE> typeClass;
     private final DataTypeTranslator translator;
+    private final boolean indexable;
 
     EntityCollectionPropertyImpl(EntityBasePropertyAccess<ENTITY> entityInstance,
             Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> typeClass,
-            String propertyName, DataTypeTranslator translator) {
+            String propertyName, DataTypeTranslator translator, boolean indexable) {
         this.entityInstance = entityInstance;
         this.propertyName = propertyName;
         this.collectionClass = collectionClass;
         this.typeClass = typeClass;
         this.translator = translator;
+        this.indexable = indexable;
     }
     
     public COLLECTION_TYPE get() throws EntityNotFoundException {
@@ -82,7 +84,7 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
 
     public void set(COLLECTION_TYPE value) throws EntityNotFoundException {
         if (value == null) {
-            entityInstance.setProperty(propertyName, null);
+            setProperty(propertyName, null);
         }
 
         if (translator != null && !value.isEmpty()) {
@@ -90,16 +92,16 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
             for (PROPERTY_TYPE prop : value) {
                 colValues.add(translator.toStoreType(prop));
             }
-            entityInstance.setProperty(propertyName,colValues);
+            setProperty(propertyName, colValues);
             return;
         }
         
         if (value instanceof SortedSet || value instanceof Set || value instanceof List) {
-            entityInstance.setProperty(propertyName, value);
+            setProperty(propertyName, value);
         } else if (value instanceof Collection && collectionClass.equals(Collection.class)) {
             ArrayList<PROPERTY_TYPE> colValue = new ArrayList<PROPERTY_TYPE>();
             colValue.addAll(value);
-            entityInstance.setProperty(propertyName, colValue);
+            setProperty(propertyName, colValue);
         } else {
             log.severe("Cannot convert Collection value to store data. Class is " + value.getClass());
             throw new NotSupportedTypeException("Cannot convert Collection value to store data. Class is " + value.getClass());
@@ -108,5 +110,13 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
     
     public String getName() {
         return propertyName;
+    }
+    
+    private void setProperty(String name, Object value) throws EntityNotFoundException {
+        if (indexable) {
+            entityInstance.setProperty(propertyName, value);
+        } else {
+            entityInstance.setUnindexedProperty(propertyName, value);
+        }
     }
 }

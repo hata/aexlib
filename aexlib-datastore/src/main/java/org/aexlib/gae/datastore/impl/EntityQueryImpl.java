@@ -1,7 +1,7 @@
 /*
  * $Id$
  * 
- * Copyright 2009 Hiroki Ata
+ * Copyright 2009-${year} Hiroki Ata
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,42 @@
  */
 package org.aexlib.gae.datastore.impl;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityBaseFactory;
 import org.aexlib.gae.datastore.EntityPropertyFilter;
 import org.aexlib.gae.datastore.EntityPropertySorter;
 import org.aexlib.gae.datastore.EntityQuery;
-import org.aexlib.gae.datastore.EntityQueryFetchOptions;
+import org.aexlib.gae.datastore.EntityResultIterable;
+import org.aexlib.gae.datastore.EntityResultIterator;
+import org.aexlib.gae.datastore.EntityResultList;
+import org.aexlib.gae.datastore.EntityResultQuery;
 
+import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.QueryResultIterable;
+import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.appengine.api.datastore.Transaction;
 
-public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements EntityQuery<ENTITY> {
+public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements EntityResultQuery<ENTITY> {
     private Query query;
     private EntityBaseFactory<ENTITY> factory;
     private PreparedQuery pq;
+
+    // Maybe, I don't need to be care about caching query instance.
+    // Right now, I used thread local. But, it may not good way
+    // if a client just only set a value and then leave it...
+    private final ThreadLocal<EntityQueryFetchOptions> threadLocalFetchOptions = new ThreadLocal<EntityQueryFetchOptions>();
+    
 
     public EntityQueryImpl(Query query, EntityBaseFactory<ENTITY> factory) {
         this.query = query;
@@ -53,24 +69,72 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         return this;
     }
     
-    public Iterable<ENTITY> asIterable() {
-        return new EntityQueryIterable<ENTITY>(getPreparedQuery().asIterable(), factory);
+    public EntityQuery<ENTITY> chunkSize(int chunkSize) {
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
+        threadLocalFetchOptions.set(
+                options != null ? options.chunkSize(chunkSize) :
+                    EntityQueryFetchOptions.Factory.withChunkSize(chunkSize));
+        return this;
     }
 
-    public Iterable<ENTITY> asIterable(EntityQueryFetchOptions options) {
-        PreparedQuery pq = getPreparedQuery();
+    public EntityQuery<ENTITY> limit(int limit) {
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
+        threadLocalFetchOptions.set(
+                options != null ? options.limit(limit) :
+                    EntityQueryFetchOptions.Factory.withLimit(limit));
+        return this;
+    }
+
+    public EntityQuery<ENTITY> offset(int offset) {
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
+        threadLocalFetchOptions.set(
+                options != null ? options.offset(offset) :
+                    EntityQueryFetchOptions.Factory.withOffset(offset));
+        return this;
+    }
+
+    public EntityQuery<ENTITY> prefetchSize(int prefetchSize) {
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
+        threadLocalFetchOptions.set(
+                options != null ? options.prefetchSize(prefetchSize) :
+                    EntityQueryFetchOptions.Factory.withPrefetchSize(prefetchSize));
+        return this;
+    }
+
+    public EntityResultQuery<ENTITY> cursor(Cursor cursor) {
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
+        threadLocalFetchOptions.set(
+                options != null ? options.cursor(cursor) :
+                    EntityQueryFetchOptions.Factory.withCursor(cursor));
+        return this;
+    }
+
+    public EntityResultIterable<ENTITY> asIterable() {
+        final PreparedQuery pq = getPreparedQuery();
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         return new EntityQueryIterable<ENTITY>(
-                pq.asIterable(((EntityQueryFetchOptionsImpl)options).toFetchOptions()), factory);
+                options != null ? pq.asQueryResultIterable(((EntityQueryFetchOptionsImpl)options).toFetchOptions()) :
+                    pq.asQueryResultIterable(), factory);
     }
 
-    public Iterator<ENTITY> asIterator() {
-        return new EntityQueryIterator<ENTITY>(getPreparedQuery().asIterator(), factory);
+    public EntityResultIterator<ENTITY> asIterator() {
+        final PreparedQuery pq = getPreparedQuery();
+        final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
+        return new EntityQueryIterator<ENTITY>(
+                options != null ? pq.asQueryResultIterator(((EntityQueryFetchOptionsImpl)options).toFetchOptions()) :
+                    pq.asQueryResultIterator(), factory);
     }
 
-    public Iterator<ENTITY> asIterator(EntityQueryFetchOptions options) {
-        PreparedQuery pq = getPreparedQuery();
-        return new EntityQueryIterator<ENTITY>(pq.asIterator(
-                ((EntityQueryFetchOptionsImpl)options).toFetchOptions()), factory);
+    /**
+     * Return a result as a list.
+     * 
+     * This operation is not efficient way to get a result
+     * because it needs much memory than iterator because of copy.
+     * So, it causes waste of memory.
+     * @return a list instance.
+     */
+    public EntityResultList<ENTITY> asList() {
+        return new EntityQueryList<ENTITY>(asIterable());
     }
 
     public ENTITY asSingleEntity() {
@@ -107,26 +171,26 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
     }
 
     
-    private static class EntityQueryIterable<ENTITY2 extends EntityBase<ENTITY2>> implements Iterable<ENTITY2> {
-        private Iterable<Entity> iterable;
+    private static class EntityQueryIterable<ENTITY2 extends EntityBase<ENTITY2>> implements EntityResultIterable<ENTITY2> {
+        private QueryResultIterable<Entity> iterable;
         private EntityBaseFactory<ENTITY2> entityFactory;
         
-        EntityQueryIterable(Iterable<Entity> iterable, EntityBaseFactory<ENTITY2> entityFactory) {
+        EntityQueryIterable(QueryResultIterable<Entity> iterable, EntityBaseFactory<ENTITY2> entityFactory) {
             this.iterable = iterable;
             this.entityFactory = entityFactory;
         }
 
-        public Iterator<ENTITY2> iterator() {
+        public EntityResultIterator<ENTITY2> iterator() {
             return new EntityQueryIterator<ENTITY2>(iterable.iterator(), entityFactory);
         }
         
     }
     
-    private static class EntityQueryIterator<ENTITY3 extends EntityBase<ENTITY3>> implements Iterator<ENTITY3> {
-        private final Iterator<Entity> iterator;
+    private static class EntityQueryIterator<ENTITY3 extends EntityBase<ENTITY3>> implements EntityResultIterator<ENTITY3> {
+        private final QueryResultIterator<Entity> iterator;
         private final EntityBaseFactory<ENTITY3> entityFactory;
 
-        EntityQueryIterator(Iterator<Entity> iterator, EntityBaseFactory<ENTITY3> entityFactory) {
+        EntityQueryIterator(QueryResultIterator<Entity> iterator, EntityBaseFactory<ENTITY3> entityFactory) {
             this.iterator = iterator;
             this.entityFactory = entityFactory;
         }
@@ -143,6 +207,121 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
             iterator.remove();
         }
         
+        public Cursor getCursor() {
+            return iterator.getCursor();
+        }
+
     }
 
+    private static class EntityQueryList<ENTITY3 extends EntityBase<ENTITY3>> implements EntityResultList<ENTITY3> {
+        private final List<ENTITY3> baseList;
+        private final Cursor cursor;
+
+        EntityQueryList(EntityResultIterable<ENTITY3> iterable) {
+            this.baseList = new LinkedList<ENTITY3>();
+ 
+            for (ENTITY3 entity : iterable) {
+                baseList.add(entity);
+            }
+            
+            cursor = iterable.iterator().getCursor();
+        }
+
+        public boolean add(ENTITY3 e) {
+            return baseList.add(e);
+        }
+
+        public void add(int index, ENTITY3 element) {
+            baseList.add(index, element);
+        }
+
+        public boolean addAll(Collection<? extends ENTITY3> c) {
+            return baseList.addAll(c);
+        }
+
+        public boolean addAll(int index, Collection<? extends ENTITY3> c) {
+            return baseList.addAll(index, c);
+        }
+
+        public void clear() {
+            baseList.clear();
+        }
+
+        public boolean contains(Object o) {
+            return baseList.contains(o);
+        }
+
+        public boolean containsAll(Collection<?> c) {
+            return baseList.containsAll(c);
+        }
+
+        public ENTITY3 get(int index) {
+            return baseList.get(index);
+        }
+
+        public int indexOf(Object o) {
+            return baseList.indexOf(o);
+        }
+
+        public boolean isEmpty() {
+            return baseList.isEmpty();
+        }
+
+        public Iterator<ENTITY3> iterator() {
+            return baseList.iterator();
+        }
+
+        public int lastIndexOf(Object o) {
+            return baseList.lastIndexOf(o);
+        }
+
+        public ListIterator<ENTITY3> listIterator() {
+            return baseList.listIterator();
+        }
+
+        public ListIterator<ENTITY3> listIterator(int index) {
+            return baseList.listIterator(index);
+        }
+
+        public boolean remove(Object o) {
+            return baseList.remove(o);
+        }
+
+        public ENTITY3 remove(int index) {
+            return baseList.remove(index);
+        }
+
+        public boolean removeAll(Collection<?> c) {
+            return baseList.removeAll(c);
+        }
+
+        public boolean retainAll(Collection<?> c) {
+            return baseList.retainAll(c);
+        }
+
+        public ENTITY3 set(int index, ENTITY3 element) {
+            return baseList.set(index, element);
+        }
+
+        public int size() {
+            return baseList.size();
+        }
+
+        public List<ENTITY3> subList(int fromIndex, int toIndex) {
+            return baseList.subList(fromIndex, toIndex);
+        }
+
+        public Object[] toArray() {
+            return baseList.toArray();
+        }
+
+        public <T> T[] toArray(T[] a) {
+            return baseList.toArray(a);
+        }
+        
+        public Cursor getCursor() {
+            return cursor;
+        }
+
+    }
 }
