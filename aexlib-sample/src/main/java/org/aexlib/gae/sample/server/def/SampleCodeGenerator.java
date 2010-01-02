@@ -18,38 +18,23 @@
 package org.aexlib.gae.sample.server.def;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.aexlib.gae.tool.impl.CodeGeneratorImpl;
+import org.aexlib.gae.tool.CodeGenerator;
+import org.aexlib.gae.tool.CodeGeneratorFactory;
 
-public class CodeGenerator extends CodeGeneratorImpl {
-    private String outDir;
+public class SampleCodeGenerator {
 
     public static void main(String[] args) throws Exception {
-        new CodeGenerator(args[0]).generate();
-    }
-    
-    private CodeGenerator(String outDir) {
-        this.outDir = outDir;
-    }
+        if (args.length < 1) {
+            System.err.println("Please set a root directory to output generated sources.");
+            return;
+        }
+        
+        CodeGenerator generator = CodeGeneratorFactory.getInstance();
+        generator.setOutputDir(new File(args[0]));
+        generator.setRootPackage("org.aexlib.gae.sample.server.entity");
+        generator.addDefinition(Document.class, Page.class, Reference.class);
 
-    @Override
-    protected Class<?>[] getEntityDefinitions() {
-        return new Class<?>[] {
-                Document.class,
-                Page.class,
-                Reference.class
-        };
+        generator.generate();
     }
-
-    @Override
-    protected String getGeneratedClassPackage() {
-        return "org.aexlib.gae.sample.server.entity";
-    }
-
-    @Override
-    protected File getOutputSourceDir() throws IOException {
-        return new File(outDir);
-    }
-
 }

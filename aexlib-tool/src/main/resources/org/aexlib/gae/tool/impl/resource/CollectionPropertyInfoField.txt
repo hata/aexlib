@@ -1,2 +1,2 @@
-    public static final EntityCollectionPropertyInfo<${entity.base.name}, ${collection.type}, ${property.type}> ${property.name.uppercase} =
+    public static final Entity${property.indexable}CollectionPropertyInfo<${entity.base.name}, ${collection.type}, ${property.type}> ${property.name.uppercase} =
         EntityPropertyInfoFactory.get${property.indexable}CollectionPropertyInfo(${entity.base.name}.class, ${collection.type}.class, ${property.type}.class, "${property.name}");

@@ -32,12 +32,12 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
 
 
     // Version Info field.
-    public static final EntityPropertyInfo<Sample, Long> VERSION =
+    public static final EntityIndexablePropertyInfo<Sample, Long> VERSION =
         EntityPropertyInfoFactory.getVersionPropertyInfo(Sample.class, "Version", 1L);
 
 
     // Property Info fields.
-    public static final EntityPropertyInfo<Sample, java.lang.String> TITLE =
+    public static final EntityIndexablePropertyInfo<Sample, java.lang.String> TITLE =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(Sample.class, java.lang.String.class, "Title");
 
     public static final EntityPropertyInfo<Sample, java.lang.String> TEXT =

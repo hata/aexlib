@@ -19,6 +19,7 @@ package org.aexlib.gae.tool;
 
 import java.util.List;
 
+import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.KeyTypeValue;
 import org.aexlib.gae.tool.anno.Kind;
@@ -31,6 +32,7 @@ public class ParentSample {
     @Version("version")
     Long version;
 
+    @Indexable
     List<Sample> children;
     
     Sample child;

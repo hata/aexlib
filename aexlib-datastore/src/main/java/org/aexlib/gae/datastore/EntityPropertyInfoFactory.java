@@ -66,12 +66,6 @@ public class EntityPropertyInfoFactory {
         return EntityVersionPropertyInfoImpl.getInstance(entityClass, propertyName, currentVersion);
     }
  
-    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
-    EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
-    getKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
-    }
-
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
     EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
@@ -84,10 +78,27 @@ public class EntityPropertyInfoFactory {
         return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyName);
     }
 
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
+    EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
+    getKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
+        return EntityKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
+    }
+
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
+    EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
+    getIndexableKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
+        return EntityKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
+    }
+
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
-    EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
+    EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
         return EntityKeyLinkCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyFactory, propertyName);
     }
 
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
+    EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
+    getIndexableKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
+        return EntityKeyLinkCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyFactory, propertyName);
+    }
 }

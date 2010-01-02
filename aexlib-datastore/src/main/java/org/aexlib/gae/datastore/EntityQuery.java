@@ -25,6 +25,11 @@ import java.util.List;
 public interface EntityQuery<ENTITY extends EntityBase<ENTITY>> extends Iterable<ENTITY> {
     public <PROPERTY_TYPE> EntityQuery<ENTITY> filter(EntityPropertyFilter<ENTITY, PROPERTY_TYPE> filter);
     public EntityQuery<ENTITY> sort(EntityPropertySorter<ENTITY> sort);
+    
+    /**
+     * Call Query#setKeysOnly().
+     */
+    public EntityQuery<ENTITY> setKeysOnly();
 
     public EntityQuery<ENTITY> limit(int limit);
     public EntityQuery<ENTITY> offset(int offset);

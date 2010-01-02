@@ -2,10 +2,9 @@
 // x
 package org.aexlib.gae.sample.server.entity;
 
-import org.aexlib.gae.sample.server.entity.version.*;
-
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import org.aexlib.gae.datastore.*;
+import org.aexlib.gae.sample.server.entity.version.*;
 import org.aexlib.gae.datastore.anno.Kind;
 
 
@@ -33,18 +32,18 @@ public class Document extends EntityNameBase<Document> {
 
 
     // Version Info field.
-    public static final EntityPropertyInfo<Document, Long> VERSION =
+    public static final EntityIndexablePropertyInfo<Document, Long> VERSION =
         EntityPropertyInfoFactory.getVersionPropertyInfo(Document.class, "Version", 1L);
 
 
     // Property Info fields.
-    public static final EntityPropertyInfo<Document, java.lang.String> TITLE =
+    public static final EntityIndexablePropertyInfo<Document, java.lang.String> TITLE =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(Document.class, java.lang.String.class, "Title");
 
-    public static final EntityPropertyInfo<Document, java.lang.String> AUTHOR =
+    public static final EntityIndexablePropertyInfo<Document, java.lang.String> AUTHOR =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(Document.class, java.lang.String.class, "Author");
 
-    public static final EntityIndexableCollectionPropertyInfo<Document, java.util.Set, Reference> REFERENCES =
+    public static final EntityCollectionPropertyInfo<Document, java.util.Set, Reference> REFERENCES =
         EntityPropertyInfoFactory.getKeyLinkCollectionPropertyInfo(Document.class, java.util.Set.class, Reference.class, Reference.FACTORY, "References");
 
     public static final EntityCollectionPropertyInfo<Document, java.util.List, org.aexlib.gae.sample.server.AttachedObject> ATTACHMENTS =
@@ -111,18 +110,42 @@ public class Document extends EntityNameBase<Document> {
         title.set(value);
         return this;
     }
+
+    public Document removeTitle() throws EntityNotFoundException {
+        title.remove();
+        return this;
+    }
+    
     public Document setAuthor(final java.lang.String value) throws EntityNotFoundException {
         author.set(value);
         return this;
     }
+
+    public Document removeAuthor() throws EntityNotFoundException {
+        author.remove();
+        return this;
+    }
+    
     public Document setReferences(final java.util.Set<Reference> value) throws EntityNotFoundException {
         references.set(value);
         return this;
     }
+
+    public Document removeReferences() throws EntityNotFoundException {
+        references.remove();
+        return this;
+    }
+    
     public Document setAttachments(final java.util.List<org.aexlib.gae.sample.server.AttachedObject> value) throws EntityNotFoundException {
         attachments.set(value);
         return this;
     }
+
+    public Document removeAttachments() throws EntityNotFoundException {
+        attachments.remove();
+        return this;
+    }
+    
 
 }
 

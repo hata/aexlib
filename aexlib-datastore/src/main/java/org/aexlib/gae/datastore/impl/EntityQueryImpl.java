@@ -27,7 +27,6 @@ import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityBaseFactory;
 import org.aexlib.gae.datastore.EntityPropertyFilter;
 import org.aexlib.gae.datastore.EntityPropertySorter;
-import org.aexlib.gae.datastore.EntityQuery;
 import org.aexlib.gae.datastore.EntityResultIterable;
 import org.aexlib.gae.datastore.EntityResultIterator;
 import org.aexlib.gae.datastore.EntityResultList;
@@ -64,12 +63,12 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         return this;
     }
 
-    public EntityQueryImpl<ENTITY> sort(EntityPropertySorter<ENTITY> sort) {
+    public EntityResultQuery<ENTITY> sort(EntityPropertySorter<ENTITY> sort) {
         ((EntityPropertySorterImpl<ENTITY>)sort).addSort(this);
         return this;
     }
     
-    public EntityQuery<ENTITY> chunkSize(int chunkSize) {
+    public EntityResultQuery<ENTITY> chunkSize(int chunkSize) {
         final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         threadLocalFetchOptions.set(
                 options != null ? options.chunkSize(chunkSize) :
@@ -77,7 +76,7 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         return this;
     }
 
-    public EntityQuery<ENTITY> limit(int limit) {
+    public EntityResultQuery<ENTITY> limit(int limit) {
         final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         threadLocalFetchOptions.set(
                 options != null ? options.limit(limit) :
@@ -85,7 +84,7 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         return this;
     }
 
-    public EntityQuery<ENTITY> offset(int offset) {
+    public EntityResultQuery<ENTITY> offset(int offset) {
         final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         threadLocalFetchOptions.set(
                 options != null ? options.offset(offset) :
@@ -93,11 +92,18 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         return this;
     }
 
-    public EntityQuery<ENTITY> prefetchSize(int prefetchSize) {
+    public EntityResultQuery<ENTITY> prefetchSize(int prefetchSize) {
         final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         threadLocalFetchOptions.set(
                 options != null ? options.prefetchSize(prefetchSize) :
                     EntityQueryFetchOptions.Factory.withPrefetchSize(prefetchSize));
+        return this;
+    }
+
+    public EntityResultQuery<ENTITY> setKeysOnly() {
+        if (!query.isKeysOnly()) {
+            query.setKeysOnly();
+        }
         return this;
     }
 
@@ -114,7 +120,7 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         return new EntityQueryIterable<ENTITY>(
                 options != null ? pq.asQueryResultIterable(((EntityQueryFetchOptionsImpl)options).toFetchOptions()) :
-                    pq.asQueryResultIterable(), factory);
+                    pq.asQueryResultIterable(), query.isKeysOnly(), factory);
     }
 
     public EntityResultIterator<ENTITY> asIterator() {
@@ -122,7 +128,7 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         final EntityQueryFetchOptions options = threadLocalFetchOptions.get();
         return new EntityQueryIterator<ENTITY>(
                 options != null ? pq.asQueryResultIterator(((EntityQueryFetchOptionsImpl)options).toFetchOptions()) :
-                    pq.asQueryResultIterator(), factory);
+                    pq.asQueryResultIterator(), query.isKeysOnly(), factory);
     }
 
     /**
@@ -172,16 +178,18 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
 
     
     private static class EntityQueryIterable<ENTITY2 extends EntityBase<ENTITY2>> implements EntityResultIterable<ENTITY2> {
-        private QueryResultIterable<Entity> iterable;
-        private EntityBaseFactory<ENTITY2> entityFactory;
+        private final QueryResultIterable<Entity> iterable;
+        private final EntityBaseFactory<ENTITY2> entityFactory;
+        private final boolean keysOnly;
         
-        EntityQueryIterable(QueryResultIterable<Entity> iterable, EntityBaseFactory<ENTITY2> entityFactory) {
+        EntityQueryIterable(QueryResultIterable<Entity> iterable, boolean keysOnly, EntityBaseFactory<ENTITY2> entityFactory) {
             this.iterable = iterable;
             this.entityFactory = entityFactory;
+            this.keysOnly = keysOnly;
         }
 
         public EntityResultIterator<ENTITY2> iterator() {
-            return new EntityQueryIterator<ENTITY2>(iterable.iterator(), entityFactory);
+            return new EntityQueryIterator<ENTITY2>(iterable.iterator(), keysOnly, entityFactory);
         }
         
     }
@@ -189,10 +197,12 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
     private static class EntityQueryIterator<ENTITY3 extends EntityBase<ENTITY3>> implements EntityResultIterator<ENTITY3> {
         private final QueryResultIterator<Entity> iterator;
         private final EntityBaseFactory<ENTITY3> entityFactory;
+        private final boolean keysOnly;
 
-        EntityQueryIterator(QueryResultIterator<Entity> iterator, EntityBaseFactory<ENTITY3> entityFactory) {
+        EntityQueryIterator(QueryResultIterator<Entity> iterator, boolean keysOnly, EntityBaseFactory<ENTITY3> entityFactory) {
             this.iterator = iterator;
             this.entityFactory = entityFactory;
+            this.keysOnly = keysOnly;
         }
 
         public boolean hasNext() {
@@ -200,7 +210,11 @@ public class EntityQueryImpl<ENTITY extends EntityBase<ENTITY>> implements Entit
         }
 
         public ENTITY3 next() {
-            return entityFactory.initInstance(iterator.next());
+            if (keysOnly) {
+                return entityFactory.initInstance(iterator.next().getKey());
+            } else {
+                return entityFactory.initInstance(iterator.next());
+            }
         }
 
         public void remove() {

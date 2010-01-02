@@ -59,10 +59,10 @@ public class TestDocument extends EntityNameBase<TestDocument> {
         EntityPropertyInfoFactory.getIndexablePropertyInfo(TestDocument.class, String.class, "Title");
 
     static EntityIndexablePropertyInfo<TestDocument, TestIdPage> PAGE =
-        EntityPropertyInfoFactory.getKeyLinkPropertyInfo(TestDocument.class, TestIdPage.class, TestIdPage.ID_FACTORY, "Page");
+        EntityPropertyInfoFactory.getIndexableKeyLinkPropertyInfo(TestDocument.class, TestIdPage.class, TestIdPage.ID_FACTORY, "Page");
 
     static EntityIndexableCollectionPropertyInfo<TestDocument, List, TestChapter> CHAPTERS =
-        EntityPropertyInfoFactory.getKeyLinkCollectionPropertyInfo(TestDocument.class, List.class, TestChapter.class, TestChapter.NAME_FACTORY, "Chapters");
+        EntityPropertyInfoFactory.getIndexableKeyLinkCollectionPropertyInfo(TestDocument.class, List.class, TestChapter.class, TestChapter.NAME_FACTORY, "Chapters");
 
     EntityProperty<TestDocument, Long> version;
     EntityProperty<TestDocument, String> title;

@@ -34,8 +34,11 @@ public class EntityChildQueryFactory<ENTITY extends EntityBase<ENTITY>, PARENT_E
     }
     
     public EntityQuery<ENTITY> query(PARENT_ENTITY parent) {
+        return resultQuery(parent);
+    }
+
+    public EntityResultQuery<ENTITY> resultQuery(PARENT_ENTITY parent) {
         Query query = new Query(EntityBase.getKindName(getEntityClass()), parent.getKey());
         return new EntityQueryImpl<ENTITY>(query, getEntityBaseFactory());
     }
-
 }

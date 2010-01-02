@@ -2,10 +2,9 @@
 // x
 package org.aexlib.gae.sample.server.entity;
 
-import org.aexlib.gae.sample.server.entity.version.*;
-
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import org.aexlib.gae.datastore.*;
+import org.aexlib.gae.sample.server.entity.version.*;
 import org.aexlib.gae.datastore.anno.Kind;
 
 
@@ -32,7 +31,7 @@ public class Reference extends EntityNameBase<Reference> {
         EntityPropertyInfoFactory.getPropertyInfo(Reference.class, java.lang.String.class, "Title");
 
     public static final EntityIndexablePropertyInfo<Reference, Document> REFERER =
-        EntityPropertyInfoFactory.getKeyLinkPropertyInfo(Reference.class, Document.class, Document.FACTORY, "Referer");
+        EntityPropertyInfoFactory.getIndexableKeyLinkPropertyInfo(Reference.class, Document.class, Document.FACTORY, "Referer");
 
 
 
@@ -75,10 +74,22 @@ public class Reference extends EntityNameBase<Reference> {
         title.set(value);
         return this;
     }
+
+    public Reference removeTitle() throws EntityNotFoundException {
+        title.remove();
+        return this;
+    }
+    
     public Reference setReferer(final Document value) throws EntityNotFoundException {
         referer.set(value);
         return this;
     }
+
+    public Reference removeReferer() throws EntityNotFoundException {
+        referer.remove();
+        return this;
+    }
+    
 
 }
 

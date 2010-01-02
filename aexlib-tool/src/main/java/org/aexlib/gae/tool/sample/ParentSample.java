@@ -32,15 +32,15 @@ public class ParentSample extends EntityNameBase<ParentSample> {
 
 
     // Version Info field.
-    public static final EntityPropertyInfo<ParentSample, Long> VERSION =
+    public static final EntityIndexablePropertyInfo<ParentSample, Long> VERSION =
         EntityPropertyInfoFactory.getVersionPropertyInfo(ParentSample.class, "version", 1L);
 
 
     // Property Info fields.
     public static final EntityIndexableCollectionPropertyInfo<ParentSample, java.util.List, Sample> CHILDREN =
-        EntityPropertyInfoFactory.getKeyLinkCollectionPropertyInfo(ParentSample.class, java.util.List.class, Sample.class, Sample.FACTORY, "Children");
+        EntityPropertyInfoFactory.getIndexableKeyLinkCollectionPropertyInfo(ParentSample.class, java.util.List.class, Sample.class, Sample.FACTORY, "Children");
 
-    public static final EntityIndexablePropertyInfo<ParentSample, Sample> CHILD =
+    public static final EntityPropertyInfo<ParentSample, Sample> CHILD =
         EntityPropertyInfoFactory.getKeyLinkPropertyInfo(ParentSample.class, Sample.class, Sample.FACTORY, "Child");
 
 

@@ -25,7 +25,20 @@ import com.google.appengine.api.datastore.Cursor;
  * 
  */
 public interface EntityResultQuery<ENTITY extends EntityBase<ENTITY>> extends EntityQuery<ENTITY> {
-    public EntityResultQuery<ENTITY> cursor(Cursor webString);
+    public <PROPERTY_TYPE> EntityResultQuery<ENTITY> filter(EntityPropertyFilter<ENTITY, PROPERTY_TYPE> filter);
+    public EntityResultQuery<ENTITY> sort(EntityPropertySorter<ENTITY> sort);
+    
+    /**
+     * Call Query#setKeysOnly().
+     */
+    public EntityResultQuery<ENTITY> setKeysOnly();
+
+    public EntityResultQuery<ENTITY> limit(int limit);
+    public EntityResultQuery<ENTITY> offset(int offset);
+    public EntityResultQuery<ENTITY> chunkSize(int chunkSize);
+    public EntityResultQuery<ENTITY> prefetchSize(int prefetchSize);
+    public EntityResultQuery<ENTITY> cursor(Cursor cursor);
+
     public EntityResultIterable<ENTITY> asIterable();
     public EntityResultIterator<ENTITY> asIterator();
     public EntityResultList<ENTITY> asList();

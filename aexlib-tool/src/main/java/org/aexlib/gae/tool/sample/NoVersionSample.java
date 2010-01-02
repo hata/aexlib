@@ -27,7 +27,7 @@ public class NoVersionSample extends EntityNameBase<NoVersionSample> {
 
 
     // Property Info fields.
-    public static final EntityPropertyInfo<NoVersionSample, java.lang.String> NAME =
+    public static final EntityIndexablePropertyInfo<NoVersionSample, java.lang.String> NAME =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(NoVersionSample.class, java.lang.String.class, "Name");
 
 

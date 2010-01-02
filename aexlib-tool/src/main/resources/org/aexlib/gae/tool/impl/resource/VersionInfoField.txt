@@ -1,2 +1,2 @@
-    public static final EntityPropertyInfo<${entity.base.name}, Long> ${version.name.uppercase} =
+    public static final EntityIndexablePropertyInfo<${entity.base.name}, Long> ${version.name.uppercase} =
         EntityPropertyInfoFactory.getVersionPropertyInfo(${entity.base.name}.class, "${version.name}", ${version.number}L);

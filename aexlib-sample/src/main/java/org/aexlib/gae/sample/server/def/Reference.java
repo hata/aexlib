@@ -17,6 +17,7 @@
  */
 package org.aexlib.gae.sample.server.def;
 
+import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.KeyTypeValue;
 import org.aexlib.gae.tool.anno.Kind;
@@ -28,7 +29,9 @@ public class Reference {
     // Unindexed string.
     String title;
 
-    // If EntityBase object is set like this, this value is
-    // stored as a Key automatically.
+    // Document is EntityBase object. In this case, the object
+    // is converted to Key and then stored to datastore.
+    // if Indexable is set, it can be able to query using Document.
+    @Indexable
     Document referer;
 }

@@ -2,10 +2,9 @@
 //
 package org.aexlib.gae.sample.server.entity;
 
-import org.aexlib.gae.sample.server.entity.version.*;
-
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import org.aexlib.gae.datastore.*;
+import org.aexlib.gae.sample.server.entity.version.*;
 import org.aexlib.gae.datastore.anno.Kind;
 
 
@@ -33,7 +32,7 @@ public class Page extends EntityChildIdBase<Page, Document> {
 
 
     // Version Info field.
-    public static final EntityPropertyInfo<Page, Long> VERSION =
+    public static final EntityIndexablePropertyInfo<Page, Long> VERSION =
         EntityPropertyInfoFactory.getVersionPropertyInfo(Page.class, "Version", 1L);
 
 
@@ -102,13 +101,31 @@ public class Page extends EntityChildIdBase<Page, Document> {
         tags.set(value);
         return this;
     }
+
+    public Page removeTags() throws EntityNotFoundException {
+        tags.remove();
+        return this;
+    }
+    
     public Page setText(final java.lang.String value) throws EntityNotFoundException {
         text.set(value);
         return this;
     }
+
+    public Page removeText() throws EntityNotFoundException {
+        text.remove();
+        return this;
+    }
+    
     public Page setNumber(final java.lang.Short value) throws EntityNotFoundException {
         number.set(value);
         return this;
     }
+
+    public Page removeNumber() throws EntityNotFoundException {
+        number.remove();
+        return this;
+    }
+    
 
 }

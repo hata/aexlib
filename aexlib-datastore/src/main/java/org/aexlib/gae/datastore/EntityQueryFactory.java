@@ -43,11 +43,19 @@ public class EntityQueryFactory<ENTITY extends EntityBase<ENTITY>> {
     }
     
     public EntityQuery<ENTITY> query() {
+        return resultQuery();
+    }
+
+    public EntityResultQuery<ENTITY> resultQuery() {
         Query query = new Query(EntityBase.getKindName(entityClass));
         return new EntityQueryImpl<ENTITY>(query, factory);
     }
 
     public EntityQuery<GenericEntityBase> ancestorQuery(ENTITY parent) {
+        return ancestorResultQuery(parent);
+    }
+
+    public EntityResultQuery<GenericEntityBase> ancestorResultQuery(ENTITY parent) {
         Query query = new Query(parent.getKey());
         return new EntityQueryImpl<GenericEntityBase>(query, GenericEntityBase.FACTORY);
     }

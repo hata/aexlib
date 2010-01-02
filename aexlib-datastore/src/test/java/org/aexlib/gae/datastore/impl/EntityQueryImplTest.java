@@ -20,7 +20,12 @@ package org.aexlib.gae.datastore.impl;
 import java.util.Iterator;
 
 import org.aexlib.gae.LocalDataStoreTestCase;
+import org.aexlib.gae.datastore.EntityResultIterable;
+import org.aexlib.gae.datastore.EntityResultIterator;
+import org.aexlib.gae.datastore.EntityResultList;
 import org.aexlib.gae.datastore.impl.EntityQueryImpl;
+
+import com.google.appengine.api.datastore.Cursor;
 
 
 public class EntityQueryImplTest extends LocalDataStoreTestCase {
@@ -55,7 +60,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
     }
 
     public void testFilterLessThan() {
-        query = query.filter(TestDocument.TITLE.lessThan("title2")).sort(TestDocument.TITLE.asc());
+        query = (EntityQueryImpl<TestDocument>) query.filter(TestDocument.TITLE.lessThan("title2")).sort(TestDocument.TITLE.asc());
         Iterator<TestDocument> docIt = query.asIterable().iterator();
         assertTrue(docIt.hasNext());
         assertEquals(docs[0].getKey(), docIt.next().getKey());
@@ -65,7 +70,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
     }
     
     public void testFilterLessThanOrEqual() {
-        query = query.filter(TestDocument.TITLE.lessThanOrEqual("title2")).sort(TestDocument.TITLE.asc());
+        query = (EntityQueryImpl<TestDocument>) query.filter(TestDocument.TITLE.lessThanOrEqual("title2")).sort(TestDocument.TITLE.asc());
         Iterator<TestDocument> docIt = query.asIterable().iterator();
         assertTrue(docIt.hasNext());
         assertEquals(docs[0].getKey(), docIt.next().getKey());
@@ -77,7 +82,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
     }
 
     public void testFilterGreaterThan() {
-        query = query.filter(TestDocument.TITLE.greaterThan("title2")).sort(TestDocument.TITLE.asc());
+        query = (EntityQueryImpl<TestDocument>) query.filter(TestDocument.TITLE.greaterThan("title2")).sort(TestDocument.TITLE.asc());
         Iterator<TestDocument> docIt = query.asIterable().iterator();
         assertTrue(docIt.hasNext());
         assertEquals(docs[3].getKey(), docIt.next().getKey());
@@ -87,7 +92,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
     }
     
     public void testFilterGreaterThanOrEqual() {
-        query = query.filter(TestDocument.TITLE.greaterThanOrEqual("title2")).sort(TestDocument.TITLE.asc());
+        query = (EntityQueryImpl<TestDocument>) query.filter(TestDocument.TITLE.greaterThanOrEqual("title2")).sort(TestDocument.TITLE.asc());
         Iterator<TestDocument> docIt = query.asIterable().iterator();
         assertTrue(docIt.hasNext());
         assertEquals(docs[2].getKey(), docIt.next().getKey());
@@ -99,7 +104,7 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
     }
 
     public void testFilterBetween() {
-        query = query.filter(TestDocument.TITLE.greaterThan("title1").lessThan("title4")).sort(TestDocument.TITLE.asc());
+        query = (EntityQueryImpl<TestDocument>) query.filter(TestDocument.TITLE.greaterThan("title1").lessThan("title4")).sort(TestDocument.TITLE.asc());
         Iterator<TestDocument> docIt = query.asIterable().iterator();
         assertTrue(docIt.hasNext());
         assertEquals(docs[2].getKey(), docIt.next().getKey());
@@ -179,4 +184,50 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
             assertEquals(4 - i, query.countEntities());
         }
     }
+    
+    public void testSetKeysOnly() throws Exception {
+        int i = 0;
+        for (TestDocument doc : TestDocument.QUERY.query().sort(TestDocument.TITLE.asc()).setKeysOnly().asIterable()) {
+            assertEquals("title" + (i++), doc.title.get());
+        }
+    }
+    
+    public void testIterableCursor() throws Exception {
+        Cursor cursor = null;
+
+        EntityResultIterable<TestDocument> iterable = TestDocument.QUERY.resultQuery().sort(TestDocument.TITLE.asc()).asIterable();
+        EntityResultIterator<TestDocument> iterator = iterable.iterator();
+
+        for (int i = 0;i < docs.length;i++) {
+            while (iterator.hasNext()) {
+                TestDocument doc = iterator.next();
+                assertEquals("title" + i, doc.title.get());
+                cursor = iterator.getCursor();
+                break;
+            }
+            cursor = Cursor.fromWebSafeString(cursor.toWebSafeString());
+            iterable = TestDocument.QUERY.resultQuery().sort(TestDocument.TITLE.asc()).cursor(cursor).asIterable();
+            iterator = iterable.iterator();
+        }
+    }
+
+    // TODO: Is this ok ?
+    // If I set offset(1), it works ...
+    // Maybe, QueryResultList.getCursor() returns the first element or last element -1,
+    // and offset is the place from it...
+    public void test_DOUTFUL_ListCursor() throws Exception {
+        Cursor cursor = null;
+
+        EntityResultList<TestDocument> list = TestDocument.QUERY.resultQuery().sort(TestDocument.TITLE.asc()).offset(0).limit(1).asList();
+        for (int i = 0;i < docs.length;i++) {
+            Iterator<TestDocument> it = list.iterator();
+            while (it.hasNext()) {
+                assertEquals("title" + i, it.next().title.get());
+            }
+            cursor = list.getCursor();
+            cursor = Cursor.fromWebSafeString(cursor.toWebSafeString());
+            list = TestDocument.QUERY.resultQuery().sort(TestDocument.TITLE.asc()).offset(1).limit(1).cursor(cursor).asList();
+        }
+    }
+
 }
