@@ -18,14 +18,14 @@
 package org.aexlib.gae.datastore.impl;
 
 import org.aexlib.gae.datastore.EntityBase;
-import org.aexlib.gae.datastore.EntityBasePropertyAccess;
 import org.aexlib.gae.datastore.EntityIndexablePropertyInfo;
-import org.aexlib.gae.datastore.EntityProperty;
 import org.aexlib.gae.datastore.EntityPropertyFilter;
 
 import com.google.appengine.api.datastore.Query;
 
-public class EntityIndexablePropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE> extends EntityPropertyInfoImpl<ENTITY, PROPERTY_TYPE> implements EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> {
+public class EntityIndexablePropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE>
+extends EntityPropertyInfoImpl<ENTITY, PROPERTY_TYPE>
+implements EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> {
     private final EntityPropertySorterImpl<ENTITY> asc;
     private final EntityPropertySorterImpl<ENTITY> desc;
     
@@ -40,12 +40,6 @@ public class EntityIndexablePropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, 
         // TODO: this should be cached.
         this.asc = new EntityPropertySorterImpl<ENTITY>(propertyName, Query.SortDirection.ASCENDING);
         this.desc = new EntityPropertySorterImpl<ENTITY>(propertyName, Query.SortDirection.DESCENDING);
-    }
-
-    @Override
-    public EntityProperty<ENTITY, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
-        return new EntityPropertyImpl<ENTITY, PROPERTY_TYPE>(
-                entityInstance, getPropertyType(), getName(), DataTypeTranslatorFactory.getIndexableTranslator(getPropertyType()), true);
     }
 
     public EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> equal(PROPERTY_TYPE value) {
@@ -92,4 +86,15 @@ public class EntityIndexablePropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, 
     protected EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> newEntityPropertyFilter() {
         return new EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE>(getName());
     }
+
+    @Override
+    protected DataTypeTranslator getTranslator(Class<PROPERTY_TYPE> propertyTypeClass) {
+        return DataTypeTranslatorFactory.getIndexableTranslator(propertyTypeClass);
+    }
+
+    @Override
+    protected boolean isIndexable() {
+        return true;
+    }
+
 }

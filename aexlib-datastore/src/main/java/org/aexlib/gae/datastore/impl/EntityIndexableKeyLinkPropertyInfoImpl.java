@@ -19,10 +19,8 @@ package org.aexlib.gae.datastore.impl;
 
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityBaseFactory;
-import org.aexlib.gae.datastore.EntityBasePropertyAccess;
-import org.aexlib.gae.datastore.EntityProperty;
 
-public class EntityKeyLinkPropertyInfoImpl
+public class EntityIndexableKeyLinkPropertyInfoImpl
 <ENTITY extends EntityBase<ENTITY>,
  PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
 extends EntityIndexablePropertyInfoImpl<ENTITY, PROPERTY_TYPE> {
@@ -30,19 +28,14 @@ extends EntityIndexablePropertyInfoImpl<ENTITY, PROPERTY_TYPE> {
     private final EntityBaseFactory<PROPERTY_TYPE> propertyFactory;
     
     public static <ENTITY2 extends EntityBase<ENTITY2>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
-        EntityKeyLinkPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>
+        EntityIndexableKeyLinkPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>
         getInstance(Class<ENTITY2> entityClass, Class<PROPERTY_TYPE> typeClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return new EntityKeyLinkPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>(entityClass, typeClass, propertyFactory, propertyName);
+        return new EntityIndexableKeyLinkPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>(entityClass, typeClass, propertyFactory, propertyName);
     }
 
-    EntityKeyLinkPropertyInfoImpl(Class<ENTITY> entityClass, Class<PROPERTY_TYPE> typeClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
+    EntityIndexableKeyLinkPropertyInfoImpl(Class<ENTITY> entityClass, Class<PROPERTY_TYPE> typeClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
         super(entityClass, typeClass, propertyName);
         this.propertyFactory = propertyFactory;
-    }
-
-    @Override
-    public EntityProperty<ENTITY, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
-        return new EntityKeyLinkPropertyImpl<ENTITY, PROPERTY_TYPE>(entityInstance, propertyFactory, getName());
     }
 
 
@@ -51,4 +44,8 @@ extends EntityIndexablePropertyInfoImpl<ENTITY, PROPERTY_TYPE> {
         return new EntityKeyLinkPropertyFilterImpl<ENTITY, PROPERTY_TYPE>(getName());
     }
 
+    @Override
+    protected DataTypeTranslator getTranslator(Class<PROPERTY_TYPE> propertyTypeClass) {
+        return new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyTypeClass, propertyFactory);
+    }
 }

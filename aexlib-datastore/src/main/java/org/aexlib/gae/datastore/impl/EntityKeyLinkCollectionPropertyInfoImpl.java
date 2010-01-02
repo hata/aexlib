@@ -52,7 +52,7 @@ extends EntityIndexableCollectionPropertyInfoImpl<ENTITY, COLLECTION_TYPE, PROPE
             Class<PROPERTY_TYPE> typeClass,
             EntityBaseFactory<PROPERTY_TYPE> propertyFactory,
             String propertyName) {
-        super(entityClass, collectionClass, typeClass, propertyName, EntityKeyLinkPropertyInfoImpl.getInstance(entityClass, typeClass, propertyFactory, propertyName));
+        super(entityClass, collectionClass, typeClass, propertyName, EntityIndexableKeyLinkPropertyInfoImpl.getInstance(entityClass, typeClass, propertyFactory, propertyName));
         this.propertyFactory = propertyFactory;
     }
 

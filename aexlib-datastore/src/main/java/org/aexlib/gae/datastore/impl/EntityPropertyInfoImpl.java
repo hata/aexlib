@@ -40,8 +40,8 @@ public class EntityPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_
     }
 
     public EntityProperty<ENTITY, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
-        return new EntityPropertyImpl<ENTITY, PROPERTY_TYPE>(entityInstance, typeClass, propertyName,
-                DataTypeTranslatorFactory.getUnindexedTranslator(typeClass), false);
+        return new EntityPropertyImpl<ENTITY, PROPERTY_TYPE>(
+                entityInstance, typeClass, propertyName, getTranslator(typeClass), isIndexable());
     }
     
     public String getName() {
@@ -50,5 +50,13 @@ public class EntityPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_
     
     protected Class<PROPERTY_TYPE> getPropertyType() {
         return typeClass;
+    }
+    
+    protected DataTypeTranslator getTranslator(Class<PROPERTY_TYPE> propertyTypeClass) {
+        return DataTypeTranslatorFactory.getUnindexedTranslator(propertyTypeClass);
+    }
+    
+    protected boolean isIndexable() {
+        return false;
     }
 }
