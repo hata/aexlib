@@ -38,16 +38,19 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
     private final Class<COLLECTION_TYPE> collectionClass;
     private final EntityBaseFactory<PROPERTY_TYPE> propertyFactory;
     private final String propertyName;
+    private final boolean indexable;
 
     public EntityKeyLinkCollectionPropertyImpl(
             EntityBasePropertyAccess<ENTITY> entityInstance,
             Class<COLLECTION_TYPE> propertyClass,
             EntityBaseFactory<PROPERTY_TYPE> propertyFactory,
-            String propertyName) {
+            String propertyName,
+            boolean indexable) {
         this.entityInstance = entityInstance;
         this.collectionClass = propertyClass;
         this.propertyFactory = propertyFactory;
         this.propertyName = propertyName;
+        this.indexable = indexable;
     }
 
     public COLLECTION_TYPE get() throws EntityNotFoundException {
@@ -72,7 +75,7 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
 
     public void set(COLLECTION_TYPE value) throws EntityNotFoundException {
         if (value == null) {
-            entityInstance.setProperty(propertyName, null);
+            setProperty(null);
             return;
         }
 
@@ -81,7 +84,7 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
         for (PROPERTY_TYPE entity : value) {
             keys.add(entity.getKey());
         }
-        entityInstance.setProperty(propertyName, keys);
+        setProperty(keys);
     }
 
     public void remove() throws EntityNotFoundException {
@@ -93,4 +96,11 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
         return propertyName;
     }
 
+    private void setProperty(Object value) throws EntityNotFoundException {
+        if (indexable) {
+            entityInstance.setProperty(propertyName, value);
+        } else {
+            entityInstance.setUnindexedProperty(propertyName, value);
+        }
+    }
 }

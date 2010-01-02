@@ -57,7 +57,8 @@ implements EntityIndexableCollectionPropertyInfo<ENTITY, COLLECTION_TYPE, PROPER
     }
 
     @Override
-    public EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
+    public EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>
+    newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
         return new EntityCollectionPropertyImpl<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>(
                 entityInstance, getCollectionType(), getPropertyType(), getName(),
                 DataTypeTranslatorFactory.getIndexableTranslator(getPropertyType()), true);

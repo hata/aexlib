@@ -21,9 +21,11 @@ import java.util.Collection;
 
 import org.aexlib.gae.datastore.impl.EntityCollectionPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityIndexableCollectionPropertyInfoImpl;
+import org.aexlib.gae.datastore.impl.EntityIndexableKeyLinkCollectionPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityIndexablePropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityKeyLinkCollectionPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityIndexableKeyLinkPropertyInfoImpl;
+import org.aexlib.gae.datastore.impl.EntityKeyLinkPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityVersionPropertyInfoImpl;
 
@@ -81,7 +83,7 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityIndexableKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
+        return EntityKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
@@ -99,6 +101,6 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getIndexableKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityKeyLinkCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyFactory, propertyName);
+        return EntityIndexableKeyLinkCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyFactory, propertyName);
     }
 }
