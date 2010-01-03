@@ -22,7 +22,7 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
         EntityChildQueryFactory.getInstance(Sample.class, FACTORY);
 
     private static final java.util.List<EntityVersionManager<Sample>> VERSION_MANAGERS;
-    
+
     static {
         VERSION_MANAGERS = new java.util.ArrayList<EntityVersionManager<Sample>>();
         VERSION_MANAGERS.add(Sample_ver1.newInstance());
@@ -84,6 +84,7 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
 
 
 
+
         initVersionManagers(VERSION_MANAGERS);
 
     }
@@ -108,7 +109,7 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
 
 
     public Sample setTitle(final java.lang.String value) throws EntityNotFoundException {
-        title.set(value);
+        this.title.set(value);
         return this;
     }
 
@@ -118,7 +119,7 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     }
     
     public Sample setText(final java.lang.String value) throws EntityNotFoundException {
-        text.set(value);
+        this.text.set(value);
         return this;
     }
 
@@ -128,7 +129,7 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     }
     
     public Sample setInsertDate(final java.util.Date value) throws EntityNotFoundException {
-        insertDate.set(value);
+        this.insertDate.set(value);
         return this;
     }
 
@@ -138,7 +139,7 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     }
     
     public Sample setReferences(final java.util.List<java.lang.String> value) throws EntityNotFoundException {
-        references.set(value);
+        this.references.set(value);
         return this;
     }
 

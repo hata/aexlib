@@ -22,7 +22,7 @@ public class ParentSample extends EntityNameBase<ParentSample> {
         EntityQueryFactory.getInstance(ParentSample.class, FACTORY);
 
     private static final java.util.List<EntityVersionManager<ParentSample>> VERSION_MANAGERS;
-    
+
     static {
         VERSION_MANAGERS = new java.util.ArrayList<EntityVersionManager<ParentSample>>();
         VERSION_MANAGERS.add(ParentSample_ver1.newInstance());
@@ -69,6 +69,7 @@ public class ParentSample extends EntityNameBase<ParentSample> {
 
 
 
+
         initVersionManagers(VERSION_MANAGERS);
 
     }
@@ -87,7 +88,7 @@ public class ParentSample extends EntityNameBase<ParentSample> {
 
 
     public ParentSample setChildren(final java.util.List<Sample> value) throws EntityNotFoundException {
-        children.set(value);
+        this.children.set(value);
         return this;
     }
 
@@ -97,7 +98,7 @@ public class ParentSample extends EntityNameBase<ParentSample> {
     }
     
     public ParentSample setChild(final Sample value) throws EntityNotFoundException {
-        child.set(value);
+        this.child.set(value);
         return this;
     }
 

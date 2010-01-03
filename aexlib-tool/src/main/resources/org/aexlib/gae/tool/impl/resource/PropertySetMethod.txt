@@ -1,5 +1,5 @@
     public ${entity.base.name} set${property.name.capital}(final ${property.type} value) throws EntityNotFoundException {
-        ${property.name.lowercase}.set(value);
+        this.${property.name.lowercase}.set(value);
         return this;
     }
 

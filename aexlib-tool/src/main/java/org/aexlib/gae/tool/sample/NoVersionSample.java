@@ -61,7 +61,7 @@ public class NoVersionSample extends EntityNameBase<NoVersionSample> {
 
 
     public NoVersionSample setName(final java.lang.String value) throws EntityNotFoundException {
-        name.set(value);
+        this.name.set(value);
         return this;
     }
 
