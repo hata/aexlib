@@ -49,6 +49,9 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     public static final EntityCollectionPropertyInfo<Sample, java.util.List, java.lang.String> REFERENCES =
         EntityPropertyInfoFactory.getCollectionPropertyInfo(Sample.class, java.util.List.class, java.lang.String.class, "References");
 
+    public static final EntityPropertyInfo<Sample, Integer> NUMBER =
+        EntityPropertyInfoFactory.getPropertyInfo(Sample.class, Integer.class, "Number");
+
 
 
     // Version field.
@@ -63,6 +66,8 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     private final EntityProperty<Sample, java.util.Date> insertDate;
 
     private final EntityCollectionProperty<Sample, java.util.List, java.lang.String> references;
+
+    private final EntityProperty<Sample, Integer> number;
 
 
 
@@ -81,6 +86,8 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
         insertDate = INSERT_DATE.newInstance(getEntityPropertyAccess());
 
         references = REFERENCES.newInstance(getEntityPropertyAccess());
+
+        number = NUMBER.newInstance(getEntityPropertyAccess());
 
 
 
@@ -105,6 +112,9 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     }
     public java.util.List<java.lang.String> getReferences() throws EntityNotFoundException {
         return references.get();
+    }
+    public Integer getNumber() throws EntityNotFoundException {
+        return number.get();
     }
 
 
@@ -145,6 +155,16 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
 
     public Sample removeReferences() throws EntityNotFoundException {
         references.remove();
+        return this;
+    }
+    
+    public Sample setNumber(final Integer value) throws EntityNotFoundException {
+        this.number.set(value);
+        return this;
+    }
+
+    public Sample removeNumber() throws EntityNotFoundException {
+        number.remove();
         return this;
     }
     

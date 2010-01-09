@@ -55,4 +55,6 @@ public class Sample {
     Date insertDate;
     
     List<String> references;
+    
+    int number;
 }

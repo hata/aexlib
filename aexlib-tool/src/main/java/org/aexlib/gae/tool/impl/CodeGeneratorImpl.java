@@ -151,6 +151,19 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private File outputDir = null;
     private String rootPackage = null;
     private ArrayList<Class<?>> definitionList = new ArrayList<Class<?>>();
+    
+    private static Map<Class<?>, Class<?>> primitiveToClassMap = new HashMap<Class<?>, Class<?>>();
+    
+    
+    static {
+        primitiveToClassMap.put(byte.class, Byte.class);
+        primitiveToClassMap.put(short.class, Short.class);
+        primitiveToClassMap.put(char.class, Character.class);
+        primitiveToClassMap.put(int.class, Integer.class);
+        primitiveToClassMap.put(long.class, Long.class);
+        primitiveToClassMap.put(float.class, Float.class);
+        primitiveToClassMap.put(double.class, Double.class);
+    }
 
     private void logMessage(String message) {
         System.out.println(message);
@@ -336,7 +349,10 @@ public class CodeGeneratorImpl implements CodeGenerator {
                     setMethodsBuilder.append(templateMap.get(Template.CollectionPropertySetMethod).apply(tokenMap));
                 } else {
                     // It may be better to use import.
-                    if (fieldClass.getPackage().equals("java.lang")) {
+                    // If a primitive type is set, package is null.
+                    if (fieldClass.isPrimitive()) {
+                        tokenMap.put(PROPERTY_TYPE, primitiveToClassMap.get(fieldClass).getSimpleName());
+                    } else if (fieldClass != null && fieldClass.getPackage() != null && fieldClass.getPackage().equals("java.lang")) {
                         tokenMap.put(PROPERTY_TYPE, fieldClass.getSimpleName());
                     } else {
                         tokenMap.put(PROPERTY_TYPE, fieldClass.getName());
