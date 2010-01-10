@@ -188,7 +188,7 @@
   <properties>
     <gwtVersion>1.7.1</gwtVersion>
 
-    <aexlib-version>0.1.0-SNAPSHOT</aexlib-version>
+    <aexlib-version>0.1.1-SNAPSHOT</aexlib-version>
   </properties>
 
 </project>

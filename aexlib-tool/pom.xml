@@ -72,7 +72,7 @@
         Specify AppEngine version for your project.
     -->
     <gae.version>1.3.0</gae.version>
-    <aexlib-version>0.1.0-SNAPSHOT</aexlib-version>
+    <aexlib-version>0.1.1-SNAPSHOT</aexlib-version>
   </properties>
 
 </project>
