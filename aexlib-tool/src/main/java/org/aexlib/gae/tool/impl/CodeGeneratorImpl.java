@@ -47,6 +47,7 @@ import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.Kind;
 import org.aexlib.gae.tool.anno.ParentKind;
 import org.aexlib.gae.tool.anno.Property;
+import org.aexlib.gae.tool.anno.Revision;
 import org.aexlib.gae.tool.anno.Version;
 
 
@@ -73,6 +74,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     public static final String PROPERTY_SET_METHODS = "${property.set.methods}";
     public static final String IMPORT_CLASSES = "${import.classes}";
     public static final String KIND_ANNOTATION = "${kind.annotation}";
+    public static final String REVISION_INIT_FIELD = "${revision.init.field}";
 
     // EntityChildBase.txt
     public static final String ENTITY_BASE_PARENT_NAME = "${entity.base.parent.name}";
@@ -111,6 +113,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     
     public static final String KEY_LINK_TYPE = "${key.link.type}";
     
+    public static final String REVISION_PROPERTY_NAME = "${revision.property.name}";
+    
     private static final String DEFAULT_FACTORY_TYPE = "Name";
     
     private static enum Template {
@@ -136,6 +140,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
             CollectionPropertySetMethod,
             KeyLinkPropertyInfoField,
             KeyLinkCollectionPropertyInfoField,
+            RevisionInitField
     };
     
     
@@ -275,6 +280,16 @@ public class CodeGeneratorImpl implements CodeGenerator {
         }
         KeyType factory = entityDef.getAnnotation(KeyType.class);
         tokenMap.put(ENTITY_FACTORY_TYPE, factory != null ? factory.value().toString() : DEFAULT_FACTORY_TYPE);
+        
+        Revision rev = entityDef.getAnnotation(Revision.class);
+        tokenMap.put(REVISION_INIT_FIELD, "");
+        if (rev != null) {
+            String revName = rev.value();
+            if (revName != null) {
+                tokenMap.put(REVISION_PROPERTY_NAME, revName);
+                tokenMap.put(REVISION_INIT_FIELD, templateMap.get(Template.RevisionInitField).apply(tokenMap));
+            }
+        }
     }
     
     private void generateProperties(Class<?> entityDef, Map<String, String> tokenMap) throws IllegalArgumentException, IllegalAccessException, InstantiationException {

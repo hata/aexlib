@@ -19,6 +19,7 @@ package org.aexlib.gae.datastore;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -55,6 +56,7 @@ import com.google.appengine.api.datastore.Transaction;
 public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
     implements Comparable<ENTITY> {
     private static final Logger log = Logger.getLogger(EntityBase.class.getName());
+    private static final Long INITIAL_REVISION = Long.valueOf(0L);
 
     private Key key;
     private Entity entity;
@@ -67,6 +69,11 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
     private EntityVersionManager<ENTITY> currentVersionManager;
     
     private final EntityBasePropertyAccess<ENTITY> propertyAccess = new EntityPropertyAccessImpl();
+
+    private Long revision = -1L;
+    private String revisionPropertyName = null;
+    
+    
 
     protected static <T extends EntityBase<T>> void sortVersionManagers(
             List<EntityVersionManager<T>> managerList) {
@@ -112,7 +119,13 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
             checkEntityVersion(entity);
         }
     }
-    
+
+    /**
+     * This method is called when a new entity is created and
+     * put it to datastore.
+     * 
+     * @param entity is a new entity which is not stored datastore yet.
+     */
     protected void initNewEntity(Entity entity) {
         this.entity = entity;
         key = entity != null ? entity.getKey() : null;
@@ -133,6 +146,7 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
                 }
                 initialUnindexedProperties = null;
             }
+            initRevision(entity);
         }
     }
     
@@ -143,6 +157,8 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
     public void put() {
         if (entity == null) {
             initNewEntity(newEntity());
+        } else {
+            verifyRevision();
         }
         TransactionManagerImpl.getInstance().put(entity);
     }
@@ -295,6 +311,7 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
                 log.warning("Version type info is not expected value. Stored type is " + o.getClass());
             }
         }
+        getRevisionToThisInstance(localEntity);
     }
     
     protected void setVersionToEntity(Entity entity) {
@@ -306,7 +323,55 @@ public abstract class EntityBase<ENTITY extends EntityBase<ENTITY>>
             entity.setProperty(versionPropertyName, Long.valueOf(version));
         }
     }
+
     
+    protected void setRevisionPropertyName(String revisionPropertyName) {
+        this.revisionPropertyName = revisionPropertyName;
+    }
+
+    private void initRevision(Entity entity) {
+        if (revisionPropertyName != null) {
+            entity.setProperty(revisionPropertyName, INITIAL_REVISION);
+            revision = INITIAL_REVISION;
+        }
+    }
+    
+    private void getRevisionToThisInstance(Entity entity) {
+        if (revisionPropertyName != null) {
+            Object o = entity.getProperty(revisionPropertyName);
+            if (o instanceof Long) {
+                revision = ((Long)o).longValue();
+            } else {
+                revision = INITIAL_REVISION;
+            }
+        }
+    }
+
+    /**
+     * If revision property is set, this method checks datastore is changed or not.
+     * @exception ConcurrentModificationException is thrown when stored data is changed
+     * since this instance is initialized.
+     */
+    private void verifyRevision() {
+        if (revisionPropertyName != null) {
+            final DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+            final Transaction tx = ds.getCurrentTransaction(null);
+            try {
+                Entity entity = tx != null ? ds.get(tx, getKey()) : ds.get(getKey());
+                Object o = entity.getProperty(revisionPropertyName);
+                if ((o != null && revision != null && !revision.equals(o)) ||
+                        ((o == null && revision != null) || (o != null && revision == null))) {
+                    throw new ConcurrentModificationException("Entity is updated.");
+                }
+
+                // If revision is ok, set a new revision to a local entity instance.
+                Long newRev = revision != null ? Long.valueOf(revision.longValue() + 1L) : INITIAL_REVISION;
+                this.entity.setProperty(revisionPropertyName, newRev);
+            } catch (EntityNotFoundException e) {
+                log.log(Level.WARNING, "verifyRevision is called for non existing entity.");
+            }
+        }
+    }
     
     private class EntityPropertyAccessImpl implements EntityBasePropertyAccess<ENTITY> {
         public void setVersion(String propertyName, long currentVersion) {

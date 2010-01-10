@@ -26,6 +26,7 @@ import org.aexlib.gae.tool.anno.KeyTypeValue;
 import org.aexlib.gae.tool.anno.Kind;
 import org.aexlib.gae.tool.anno.ParentKind;
 import org.aexlib.gae.tool.anno.Property;
+import org.aexlib.gae.tool.anno.Revision;
 import org.aexlib.gae.tool.anno.Version;
 
 
@@ -35,6 +36,7 @@ import org.aexlib.gae.tool.anno.Version;
 @KeyType(KeyTypeValue.ID)
 @Kind("Sample")
 @ParentKind(ParentSample.class)
+@Revision("Revision")
 public class Sample {
     // Version should have long type.
     // System time and serializer may help to generate version number.

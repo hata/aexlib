@@ -1,5 +1,6 @@
+//
 // generated code.
-// x
+//
 package org.aexlib.gae.tool.sample;
 
 import com.google.appengine.api.datastore.EntityNotFoundException;
@@ -42,6 +43,7 @@ public class NoVersionSample extends EntityNameBase<NoVersionSample> {
 
     // Constructor. This is private to be created by FACTORY.
     private NoVersionSample() {
+
         // Initialize a version.
 
 

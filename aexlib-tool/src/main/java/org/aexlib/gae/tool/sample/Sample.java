@@ -1,3 +1,4 @@
+//
 // generated code.
 //
 package org.aexlib.gae.tool.sample;
@@ -74,6 +75,8 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     // Constructor. This is private to be created by FACTORY.
     private Sample() {
         setParentEntityBaseFactory(ParentSample.FACTORY);
+        setRevisionPropertyName("Revision");
+
         // Initialize a version.
         version = VERSION.newInstance(getEntityPropertyAccess());
 

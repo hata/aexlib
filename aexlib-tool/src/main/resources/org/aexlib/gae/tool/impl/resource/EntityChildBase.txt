@@ -1,3 +1,4 @@
+//
 // generated code.
 //
 package ${package};
@@ -37,6 +38,7 @@ ${property.fields}
     // Constructor. This is private to be created by FACTORY.
     private ${entity.base.name}() {
         setParentEntityBaseFactory(${entity.base.parent.name}.FACTORY);
+${revision.init.field}
         // Initialize a version.
 ${version.init.field}
 

@@ -1,5 +1,6 @@
+//
 // generated code.
-// x
+//
 package ${package};
 
 import com.google.appengine.api.datastore.EntityNotFoundException;
@@ -36,6 +37,7 @@ ${property.fields}
 
     // Constructor. This is private to be created by FACTORY.
     private ${entity.base.name}() {
+${revision.init.field}
         // Initialize a version.
 ${version.init.field}
 

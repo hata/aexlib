@@ -1,0 +1,1 @@
+        setRevisionPropertyName("${revision.property.name}");
