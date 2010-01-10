@@ -35,9 +35,10 @@ public class EntityNameBase<ENTITY extends EntityNameBase<ENTITY>> extends Entit
      * Otherwise, return false.
      */
     public boolean putIfAbsent() {
+        final Key key = getKey();
+
         final DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
         Transaction tx = ds.beginTransaction();
-        final Key key = getKey();
         
         try {
             if (key != null) {

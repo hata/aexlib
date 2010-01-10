@@ -115,4 +115,5 @@ public class EntityBaseTest extends LocalDataStoreTestCase {
         Entity entity = DatastoreServiceFactory.getDatastoreService().get(doc.getKey());
         assertEquals("title2", entity.getProperty("Title"));
     }
+
 }

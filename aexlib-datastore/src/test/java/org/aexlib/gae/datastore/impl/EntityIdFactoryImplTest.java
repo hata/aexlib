@@ -41,5 +41,4 @@ public class EntityIdFactoryImplTest extends LocalDataStoreTestCase {
         assertNotNull(doc.getKey());
         assertEquals(EntityBase.getKindName(TestEntry.class), doc.getKey().getKind());
     }
-
 }
