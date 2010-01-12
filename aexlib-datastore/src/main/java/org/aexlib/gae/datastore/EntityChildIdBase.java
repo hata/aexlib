@@ -19,6 +19,7 @@ package org.aexlib.gae.datastore;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 public class EntityChildIdBase<ENTITY extends EntityChildIdBase<ENTITY, PARENT_ENTITY>, PARENT_ENTITY extends EntityBase<PARENT_ENTITY>> extends EntityIdBase<ENTITY> implements EntityChildBase<PARENT_ENTITY> {
     private Key parentKey;
@@ -37,6 +38,12 @@ public class EntityChildIdBase<ENTITY extends EntityChildIdBase<ENTITY, PARENT_E
     
     protected void init(Key parentKey, String kind) {
         init(kind);
+        this.parentKey = parentKey;
+    }
+
+    protected void init(Key parentKey, String kind, long id) {
+        init(kind);
+        super.init(KeyFactory.createKey(parentKey, kind, id));
         this.parentKey = parentKey;
     }
 

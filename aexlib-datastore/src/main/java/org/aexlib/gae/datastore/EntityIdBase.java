@@ -24,12 +24,18 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
 
 public class EntityIdBase<ENTITY extends EntityIdBase<ENTITY>> extends EntityBase<ENTITY> {
     private  String kind;
 
     protected void init(String kind) {
+        this.kind = kind;
+    }
+
+    protected void init(String kind, long id) {
+        init(KeyFactory.createKey(kind, id));
         this.kind = kind;
     }
 

@@ -79,14 +79,11 @@ public class EntityFactory {
             entity.init(kind);
         }
         
-    /* TODO: Disable this now... I need to find a way for unique -id.
-        public ENTITY createEntity(long id) {
-            Key key = KeyFactory.createKey(EntityBaseImpl.getKindName(entityClass), id);
-            ENTITY entity = newInstance();
-            entity.setKey(key);
+        public ENTITY initInstance(long id) {
+            ENTITY entity = getCreator().newInstance();
+            entity.init(EntityBase.getKindName(entityClass), id);
             return entity;
         }
-    */    
     }
     
     
@@ -104,14 +101,12 @@ public class EntityFactory {
             entity.init(parent.getKey(), EntityBase.getKindName(entityClass));
             return entity;
         }
-    /* may not good until I know a way to allocate unique-id.
-        public ENTITY getEntity(PARENT_ENTITY parent, long id) {
-            Key key = KeyFactory.createKey(parent.getKey(), EntityBaseImpl.getKindName(entityClass), id);
-            ENTITY entity = newInstance();
-            entity.setKey(parent.getKey(), key);
+
+        public ENTITY initInstance(PARENT_ENTITY parent, long id) {
+            ENTITY entity = getCreator().newInstance();
+            entity.init(parent.getKey(), EntityBase.getKindName(entityClass), id);
             return entity;
         }
-    */    
     }
     
     private static class EntityChildNameFactoryImpl<ENTITY extends EntityChildNameBase<ENTITY, PARENT_ENTITY>, PARENT_ENTITY extends EntityBase<PARENT_ENTITY>>

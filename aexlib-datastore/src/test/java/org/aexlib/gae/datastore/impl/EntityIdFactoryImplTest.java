@@ -41,4 +41,24 @@ public class EntityIdFactoryImplTest extends LocalDataStoreTestCase {
         assertNotNull(doc.getKey());
         assertEquals(EntityBase.getKindName(TestEntry.class), doc.getKey().getKind());
     }
+
+    public void testGetEntityWithId() {
+        doc = TestEntry.ID_FACTORY.initInstance(10);
+        assertNotNull(doc);
+        assertNotNull(doc.getKey());
+        assertEquals(10, doc.getKey().getId());
+        assertTrue(doc.putIfAbsent());
+        assertNotNull(doc.getKey());
+        assertEquals(EntityBase.getKindName(TestEntry.class), doc.getKey().getKind());
+        assertEquals(10, doc.getKey().getId());
+
+        doc = TestEntry.ID_FACTORY.initInstance(10);
+        assertNotNull(doc);
+        assertNotNull(doc.getKey());
+        assertEquals(10, doc.getKey().getId());
+        assertFalse(doc.putIfAbsent());
+        assertNotNull(doc.getKey());
+        assertEquals(EntityBase.getKindName(TestEntry.class), doc.getKey().getKind());
+        assertEquals(10, doc.getKey().getId());
+    }
 }

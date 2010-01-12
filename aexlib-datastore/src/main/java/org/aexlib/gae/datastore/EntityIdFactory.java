@@ -20,4 +20,5 @@ package org.aexlib.gae.datastore;
 
 public interface EntityIdFactory<ENTITY extends EntityBase<ENTITY>> extends EntityBaseFactory<ENTITY>  {
     public ENTITY initInstance();
+    public ENTITY initInstance(long id);
 }
