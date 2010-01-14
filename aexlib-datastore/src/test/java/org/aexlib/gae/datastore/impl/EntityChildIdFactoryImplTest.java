@@ -20,6 +20,8 @@ package org.aexlib.gae.datastore.impl;
 import org.aexlib.gae.LocalDataStoreTestCase;
 import org.aexlib.gae.datastore.EntityBase;
 
+import com.google.appengine.api.datastore.KeyFactory;
+
 
 public class EntityChildIdFactoryImplTest extends LocalDataStoreTestCase {
 
@@ -58,5 +60,10 @@ public class EntityChildIdFactoryImplTest extends LocalDataStoreTestCase {
         assertNotNull(page.getKey());
         assertFalse(page.putIfAbsent());
         assertEquals(10, page.getKey().getId());
+    }
+    
+    public void testInitKeyAndPut() {
+        TestIdPage page = TestIdPage.ID_FACTORY.initInstance(KeyFactory.createKey(doc.getKey(), TestIdPage.getKindName(TestIdPage.class), 5L));
+        page.put();
     }
 }

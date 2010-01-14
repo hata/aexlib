@@ -55,7 +55,8 @@ public class EntityChildIdBase<ENTITY extends EntityChildIdBase<ENTITY, PARENT_E
 
     @Override
     protected Entity newEntity() {
-        return new Entity(getKind(), parentKey);
+        final Key key = getKey();
+        return key != null ? new Entity(key) : new Entity(getKind(), parentKey);
     }
     
     protected void setParentEntityBaseFactory(EntityBaseFactory<PARENT_ENTITY> parentFactory) {

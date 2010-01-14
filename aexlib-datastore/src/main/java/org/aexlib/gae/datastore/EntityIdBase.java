@@ -85,7 +85,8 @@ public class EntityIdBase<ENTITY extends EntityIdBase<ENTITY>> extends EntityBas
     
     @Override
     protected Entity newEntity() {
-        return new Entity(kind);
+        final Key key = getKey();
+        return key != null ? new Entity(key) : new Entity(kind);
     }
 
     protected String getKind() {
