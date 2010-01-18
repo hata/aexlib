@@ -65,5 +65,6 @@ public class EntityChildIdFactoryImplTest extends LocalDataStoreTestCase {
     public void testInitKeyAndPut() {
         TestIdPage page = TestIdPage.ID_FACTORY.initInstance(KeyFactory.createKey(doc.getKey(), TestIdPage.getKindName(TestIdPage.class), 5L));
         page.put();
+        assertEquals(5L, page.getKey().getId());
     }
 }

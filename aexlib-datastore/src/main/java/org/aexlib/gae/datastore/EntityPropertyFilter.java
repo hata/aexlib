@@ -26,6 +26,6 @@ public interface EntityPropertyFilter<ENTITY extends EntityBase<ENTITY>, PROPERT
     EntityPropertyFilter<ENTITY, PROPERTY_TYPE> greaterThan(PROPERTY_TYPE value);
     EntityPropertyFilter<ENTITY, PROPERTY_TYPE> greaterThanOrEqual(PROPERTY_TYPE value);
     EntityPropertyFilter<ENTITY, PROPERTY_TYPE> in(PROPERTY_TYPE value);
-    EntityPropertyFilter<ENTITY, PROPERTY_TYPE> not_equal(PROPERTY_TYPE value);
+    EntityPropertyFilter<ENTITY, PROPERTY_TYPE> notEqual(PROPERTY_TYPE value);
     
 }

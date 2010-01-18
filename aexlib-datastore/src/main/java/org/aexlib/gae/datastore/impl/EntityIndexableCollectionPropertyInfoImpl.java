@@ -100,9 +100,9 @@ implements EntityIndexableCollectionPropertyInfo<ENTITY, COLLECTION_TYPE, PROPER
         return propertyInfo.in(value);
     }
 
-    public EntityPropertyFilter<ENTITY, PROPERTY_TYPE> not_equal(
+    public EntityPropertyFilter<ENTITY, PROPERTY_TYPE> notEqual(
             PROPERTY_TYPE value) {
-        return propertyInfo.not_equal(value);
+        return propertyInfo.notEqual(value);
     }
 
 }

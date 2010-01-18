@@ -67,5 +67,6 @@ public class EntityIdFactoryImplTest extends LocalDataStoreTestCase {
     public void testInitKeyAndPut() {
         doc = TestEntry.ID_FACTORY.initInstance(KeyFactory.createKey(TestEntry.getKindName(TestEntry.class), 10L));
         doc.put();
+        assertEquals(10L, doc.getKey().getId());
     }
 }

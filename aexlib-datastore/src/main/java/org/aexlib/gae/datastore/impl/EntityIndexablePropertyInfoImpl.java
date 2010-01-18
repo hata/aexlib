@@ -71,8 +71,8 @@ implements EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> {
         return newEntityPropertyFilter().in(value);
     }
 
-    public EntityPropertyFilter<ENTITY, PROPERTY_TYPE> not_equal(PROPERTY_TYPE value) {
-        return newEntityPropertyFilter().not_equal(value);
+    public EntityPropertyFilter<ENTITY, PROPERTY_TYPE> notEqual(PROPERTY_TYPE value) {
+        return newEntityPropertyFilter().notEqual(value);
     }
 
     public EntityPropertySorterImpl<ENTITY> asc() {

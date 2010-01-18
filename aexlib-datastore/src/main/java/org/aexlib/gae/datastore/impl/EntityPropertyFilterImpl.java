@@ -70,7 +70,7 @@ public class EntityPropertyFilterImpl<ENTITY extends EntityBase<ENTITY>, PROPERT
         return this;
     }
 
-    public EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> not_equal(PROPERTY_TYPE value) {
+    public EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> notEqual(PROPERTY_TYPE value) {
         opList.add(Query.FilterOperator.NOT_EQUAL);
         valueList.add(value);
         return this;
