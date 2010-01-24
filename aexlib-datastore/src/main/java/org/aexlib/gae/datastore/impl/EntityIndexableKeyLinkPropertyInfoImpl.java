@@ -38,12 +38,6 @@ extends EntityIndexablePropertyInfoImpl<ENTITY, PROPERTY_TYPE> {
         this.propertyFactory = propertyFactory;
     }
 
-
-    @Override
-    protected EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> newEntityPropertyFilter() {
-        return new EntityKeyLinkPropertyFilterImpl<ENTITY, PROPERTY_TYPE>(getName());
-    }
-
     @Override
     protected DataTypeTranslator getTranslator(Class<PROPERTY_TYPE> propertyTypeClass) {
         return new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyTypeClass, propertyFactory);
