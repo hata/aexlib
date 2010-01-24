@@ -31,12 +31,12 @@ implements EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> {
     
     public static <ENTITY2 extends EntityBase<ENTITY2>, PROPERTY_TYPE>
     EntityIndexablePropertyInfoImpl<ENTITY2, PROPERTY_TYPE>
-    getInstance(Class<ENTITY2> entityClass, Class<PROPERTY_TYPE> typeClass, String propertyName) {
-        return new EntityIndexablePropertyInfoImpl<ENTITY2, PROPERTY_TYPE>(entityClass, typeClass, propertyName);
+    getInstance(Class<ENTITY2> entityClass, Class<PROPERTY_TYPE> typeClass, DataTypeTranslator translator, String propertyName) {
+        return new EntityIndexablePropertyInfoImpl<ENTITY2, PROPERTY_TYPE>(entityClass, typeClass, translator, propertyName);
     }
 
-    EntityIndexablePropertyInfoImpl(Class<ENTITY> entityClass, Class<PROPERTY_TYPE> typeClass, String propertyName) {
-        super(entityClass, typeClass, propertyName);
+    EntityIndexablePropertyInfoImpl(Class<ENTITY> entityClass, Class<PROPERTY_TYPE> propertyClass, DataTypeTranslator translator, String propertyName) {
+        super(entityClass, propertyClass, translator, propertyName);
         // TODO: this should be cached.
         this.asc = new EntityPropertySorterImpl<ENTITY>(propertyName, Query.SortDirection.ASCENDING);
         this.desc = new EntityPropertySorterImpl<ENTITY>(propertyName, Query.SortDirection.DESCENDING);
@@ -85,11 +85,6 @@ implements EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> {
     
     protected EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> newEntityPropertyFilter() {
         return new EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE>(getName(), getTranslator(getPropertyType()));
-    }
-
-    @Override
-    protected DataTypeTranslator getTranslator(Class<PROPERTY_TYPE> propertyTypeClass) {
-        return DataTypeTranslatorFactory.getIndexableTranslator(propertyTypeClass);
     }
 
     @Override

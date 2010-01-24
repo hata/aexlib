@@ -30,27 +30,32 @@ public class EntityCollectionPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>,
 //    private final Class<ENTITY> entityClass;
     private final Class<COLLECTION_TYPE> collectionClass;
     private final Class<PROPERTY_TYPE> typeClass;
+    private final DataTypeTranslator translator;
     private final String propertyName;
 
     public static <ENTITY2 extends EntityBase<ENTITY2>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
         EntityCollectionPropertyInfoImpl<ENTITY2, COLLECTION_TYPE, PROPERTY_TYPE>
-            getInstance(Class<ENTITY2> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> typeClass, String propertyName) {
-        return new EntityCollectionPropertyInfoImpl<ENTITY2, COLLECTION_TYPE, PROPERTY_TYPE>(entityClass, collectionClass, typeClass, propertyName);
+            getInstance(Class<ENTITY2> entityClass, Class<COLLECTION_TYPE> collectionClass,
+                    Class<PROPERTY_TYPE> typeClass, DataTypeTranslator translator, String propertyName) {
+        return new EntityCollectionPropertyInfoImpl<ENTITY2, COLLECTION_TYPE, PROPERTY_TYPE>(entityClass, collectionClass, typeClass, translator, propertyName);
     }
 
     EntityCollectionPropertyInfoImpl(Class<ENTITY> entityClass,
             Class<COLLECTION_TYPE> collectionClass,
-            Class<PROPERTY_TYPE> typeClass, String propertyName) {
+            Class<PROPERTY_TYPE> typeClass,
+            DataTypeTranslator translator,
+            String propertyName) {
 //        this.entityClass = entityClass;
         this.collectionClass = collectionClass;
         this.typeClass = typeClass;
+        this.translator = translator;
         this.propertyName = propertyName;
     }
 
     public EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
         return new EntityCollectionPropertyImpl<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>(
-                entityInstance, collectionClass, typeClass, propertyName,
-                DataTypeTranslatorFactory.getUnindexedTranslator(typeClass), false);
+                entityInstance, collectionClass, typeClass, translator,
+                propertyName, false);
     }
 
     public String getName() {
@@ -63,5 +68,9 @@ public class EntityCollectionPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>,
     
     protected Class<PROPERTY_TYPE> getPropertyType() {
         return typeClass;
+    }
+    
+    protected DataTypeTranslator getDataTypeTranslator() {
+        return translator;
     }
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import org.aexlib.gae.LocalDataStoreTestCase;
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityProperty;
+import org.aexlib.gae.datastore.EntityPropertyInfoFactory;
 import org.aexlib.gae.datastore.impl.EntityIndexablePropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityPropertyFilterImpl;
 import org.aexlib.gae.datastore.impl.EntityPropertySorterImpl;
@@ -44,7 +45,7 @@ public class EntityIndexablePropertyInfoImplTest extends LocalDataStoreTestCase 
 
     protected void setUp() throws Exception {
         super.setUp();
-        info = EntityIndexablePropertyInfoImpl.getInstance(TestDocument.class, String.class, "testProp");
+        info = (EntityIndexablePropertyInfoImpl<TestDocument, String>)EntityPropertyInfoFactory.getIndexablePropertyInfo(TestDocument.class, String.class, "testProp");
         doc = TestDocument.NAME_FACTORY.initInstance("test");
         doc.putIfAbsent();
         opList = new ArrayList<FilterOperator>();

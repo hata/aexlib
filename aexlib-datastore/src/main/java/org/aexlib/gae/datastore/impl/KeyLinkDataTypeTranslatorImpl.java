@@ -22,12 +22,12 @@ import org.aexlib.gae.datastore.EntityBaseFactory;
 
 import com.google.appengine.api.datastore.Key;
 
-class KeyLinkDataTypeTranslatorImpl<PROP_ENTITY extends EntityBase<PROP_ENTITY>> implements DataTypeTranslator {
+public class KeyLinkDataTypeTranslatorImpl<PROP_ENTITY extends EntityBase<PROP_ENTITY>> implements DataTypeTranslator {
 
     private final EntityBaseFactory<PROP_ENTITY> propertyFactory;
     private final Class<PROP_ENTITY> typeClass;
     
-    KeyLinkDataTypeTranslatorImpl(Class<PROP_ENTITY> typeClass, EntityBaseFactory<PROP_ENTITY> propertyFactory) {
+    public KeyLinkDataTypeTranslatorImpl(Class<PROP_ENTITY> typeClass, EntityBaseFactory<PROP_ENTITY> propertyFactory) {
         this.propertyFactory = propertyFactory;
         this.typeClass = typeClass;
     }

@@ -45,7 +45,7 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
 
     EntityCollectionPropertyImpl(EntityBasePropertyAccess<ENTITY> entityInstance,
             Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> typeClass,
-            String propertyName, DataTypeTranslator translator, boolean indexable) {
+            DataTypeTranslator translator, String propertyName, boolean indexable) {
         this.entityInstance = entityInstance;
         this.propertyName = propertyName;
         this.collectionClass = collectionClass;
@@ -84,7 +84,7 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
 
     public void set(COLLECTION_TYPE value) throws EntityNotFoundException {
         if (value == null) {
-            setProperty(propertyName, null);
+            setProperty(null);
         }
 
         if (translator != null && !value.isEmpty()) {
@@ -92,16 +92,16 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
             for (PROPERTY_TYPE prop : value) {
                 colValues.add(translator.toStoreType(prop));
             }
-            setProperty(propertyName, colValues);
+            setProperty(colValues);
             return;
         }
         
         if (value instanceof SortedSet || value instanceof Set || value instanceof List) {
-            setProperty(propertyName, value);
+            setProperty(value);
         } else if (value instanceof Collection && collectionClass.equals(Collection.class)) {
             ArrayList<PROPERTY_TYPE> colValue = new ArrayList<PROPERTY_TYPE>();
             colValue.addAll(value);
-            setProperty(propertyName, colValue);
+            setProperty(colValue);
         } else {
             log.severe("Cannot convert Collection value to store data. Class is " + value.getClass());
             throw new NotSupportedTypeException("Cannot convert Collection value to store data. Class is " + value.getClass());
@@ -117,7 +117,7 @@ implements EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>  {
         return propertyName;
     }
     
-    private void setProperty(String name, Object value) throws EntityNotFoundException {
+    private void setProperty(Object value) throws EntityNotFoundException {
         if (indexable) {
             entityInstance.setProperty(propertyName, value);
         } else {

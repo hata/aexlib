@@ -24,6 +24,7 @@ import java.util.HashSet;
 
 import org.aexlib.gae.LocalDataStoreTestCase;
 import org.aexlib.gae.datastore.EntityProperty;
+import org.aexlib.gae.datastore.EntityPropertyInfoFactory;
 import org.aexlib.gae.datastore.impl.EntityPropertyInfoImpl;
 
 import com.google.appengine.api.blobstore.BlobKey;
@@ -57,7 +58,7 @@ public class EntityPropertyInfoImplTest extends LocalDataStoreTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        info = EntityPropertyInfoImpl.getInstance(TestDocument.class, String.class, "testProp");
+        info = (EntityPropertyInfoImpl<TestDocument, String>)EntityPropertyInfoFactory.getPropertyInfo(TestDocument.class, String.class, "testProp");
         doc = TestDocument.NAME_FACTORY.initInstance("test");
         doc.putIfAbsent();
         opList = new ArrayList<FilterOperator>();
@@ -126,7 +127,7 @@ public class EntityPropertyInfoImplTest extends LocalDataStoreTestCase {
     }
 
     public void testInteger() throws Exception {
-        EntityPropertyInfoImpl<TestDocument, Integer> info = EntityPropertyInfoImpl.getInstance(TestDocument.class, Integer.class, "prop" + Integer.class.getSimpleName());
+        EntityPropertyInfoImpl<TestDocument, Integer> info = (EntityPropertyInfoImpl<TestDocument, Integer>)EntityPropertyInfoFactory.getPropertyInfo(TestDocument.class, Integer.class, "prop" + Integer.class.getSimpleName());
         EntityProperty<TestDocument, Integer> prop = info.newInstance(doc.getEntityPropertyAccess());
         prop.set(10);
         doc.put();
@@ -136,7 +137,7 @@ public class EntityPropertyInfoImplTest extends LocalDataStoreTestCase {
 
 
     public void testSerializable() throws Exception {
-        EntityPropertyInfoImpl<TestDocument, SerializableObject> info = EntityPropertyInfoImpl.getInstance(TestDocument.class, SerializableObject.class, "prop" + SerializableObject.class.getSimpleName());
+        EntityPropertyInfoImpl<TestDocument, SerializableObject> info = (EntityPropertyInfoImpl<TestDocument, SerializableObject>)EntityPropertyInfoFactory.getPropertyInfo(TestDocument.class, SerializableObject.class, "prop" + SerializableObject.class.getSimpleName());
         EntityProperty<TestDocument, SerializableObject> prop = info.newInstance(doc.getEntityPropertyAccess());
         SerializableObject value = new SerializableObject(5);
         prop.set(value);
@@ -148,7 +149,7 @@ public class EntityPropertyInfoImplTest extends LocalDataStoreTestCase {
     
     public void testNotSerializableUserObject() throws Exception {
         try {
-            EntityPropertyInfoImpl<TestDocument, NotSerializableObject> info = EntityPropertyInfoImpl.getInstance(TestDocument.class, NotSerializableObject.class, "prop" + NotSerializableObject.class.getSimpleName());
+            EntityPropertyInfoImpl<TestDocument, NotSerializableObject> info = (EntityPropertyInfoImpl<TestDocument, NotSerializableObject>)EntityPropertyInfoFactory.getPropertyInfo(TestDocument.class, NotSerializableObject.class, "prop" + NotSerializableObject.class.getSimpleName());
             EntityProperty<TestDocument, NotSerializableObject> prop = info.newInstance(doc.getEntityPropertyAccess());
             NotSerializableObject value = new NotSerializableObject();
             prop.set(value);

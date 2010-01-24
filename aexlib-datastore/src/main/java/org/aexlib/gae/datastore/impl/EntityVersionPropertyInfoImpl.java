@@ -35,7 +35,7 @@ public class EntityVersionPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>> ex
 
     public EntityVersionPropertyInfoImpl(Class<ENTITY> entityClass,
            String propertyName, long version) {
-        super(entityClass, Long.class, propertyName);
+        super(entityClass, Long.class, DataTypeTranslatorFactory.getIndexableTranslator(Long.class), propertyName);
         this.version = version;
     }
 

@@ -19,15 +19,14 @@ package org.aexlib.gae.datastore;
 
 import java.util.Collection;
 
+import org.aexlib.gae.datastore.impl.DataTypeTranslator;
+import org.aexlib.gae.datastore.impl.DataTypeTranslatorFactory;
 import org.aexlib.gae.datastore.impl.EntityCollectionPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityIndexableCollectionPropertyInfoImpl;
-import org.aexlib.gae.datastore.impl.EntityIndexableKeyLinkCollectionPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityIndexablePropertyInfoImpl;
-import org.aexlib.gae.datastore.impl.EntityKeyLinkCollectionPropertyInfoImpl;
-import org.aexlib.gae.datastore.impl.EntityIndexableKeyLinkPropertyInfoImpl;
-import org.aexlib.gae.datastore.impl.EntityKeyLinkPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityVersionPropertyInfoImpl;
+import org.aexlib.gae.datastore.impl.KeyLinkDataTypeTranslatorImpl;
 
 
 public class EntityPropertyInfoFactory {
@@ -46,7 +45,8 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE>
     EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyName);
+        return EntityPropertyInfoImpl.getInstance(entityClass, propertyClass,
+                DataTypeTranslatorFactory.getUnindexedTranslator(propertyClass), propertyName);
     }
 
     /**
@@ -59,7 +59,8 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE>
     EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getIndexablePropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityIndexablePropertyInfoImpl.getInstance(entityClass, propertyClass, propertyName);
+        return EntityIndexablePropertyInfoImpl.getInstance(entityClass, propertyClass,
+                DataTypeTranslatorFactory.getIndexableTranslator(propertyClass), propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>>
@@ -71,36 +72,42 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
     EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyName);
+        return EntityCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass,
+                DataTypeTranslatorFactory.getUnindexedTranslator(propertyClass), propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
     EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getIndexableCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyName);
+        return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass,
+                DataTypeTranslatorFactory.getIndexableTranslator(propertyClass), propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
+        final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
+        return EntityPropertyInfoImpl.getInstance(entityClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getIndexableKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityIndexableKeyLinkPropertyInfoImpl.getInstance(entityClass, propertyClass, propertyFactory, propertyName);
+        final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
+        return EntityIndexablePropertyInfoImpl.getInstance(entityClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityKeyLinkCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyFactory, propertyName);
+        final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
+        return EntityCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getIndexableKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
-        return EntityIndexableKeyLinkCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, propertyFactory, propertyName);
+        final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
+        return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, translator, propertyName);
     }
 }

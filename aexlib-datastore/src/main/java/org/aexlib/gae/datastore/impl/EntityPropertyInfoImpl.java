@@ -26,22 +26,24 @@ public class EntityPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_
 //    private final Class<ENTITY> entityClass;
     private final Class<PROPERTY_TYPE> typeClass;
     private final String propertyName;
+    private final DataTypeTranslator translator;
     
     public static <ENTITY2 extends EntityBase<ENTITY2>, PROPERTY_TYPE>
         EntityPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>
-        getInstance(Class<ENTITY2> entityClass, Class<PROPERTY_TYPE> typeClass, String propertyName) {
-        return new EntityPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>(entityClass, typeClass, propertyName);
+        getInstance(Class<ENTITY2> entityClass, Class<PROPERTY_TYPE> typeClass, DataTypeTranslator translator, String propertyName) {
+        return new EntityPropertyInfoImpl<ENTITY2, PROPERTY_TYPE>(entityClass, typeClass, translator, propertyName);
     }
 
-    EntityPropertyInfoImpl(Class<ENTITY> entityClass, Class<PROPERTY_TYPE> typeClass, String propertyName) {
+    EntityPropertyInfoImpl(Class<ENTITY> entityClass, Class<PROPERTY_TYPE> typeClass, DataTypeTranslator translator, String propertyName) {
 //        this.entityClass = entityClass;
         this.typeClass = typeClass;
         this.propertyName = propertyName;
+        this.translator = translator;
     }
 
     public EntityProperty<ENTITY, PROPERTY_TYPE> newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
         return new EntityPropertyImpl<ENTITY, PROPERTY_TYPE>(
-                entityInstance, typeClass, propertyName, getTranslator(typeClass), isIndexable());
+                entityInstance, typeClass, propertyName, translator, isIndexable());
     }
     
     public String getName() {
@@ -53,7 +55,7 @@ public class EntityPropertyInfoImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_
     }
     
     protected DataTypeTranslator getTranslator(Class<PROPERTY_TYPE> propertyTypeClass) {
-        return DataTypeTranslatorFactory.getUnindexedTranslator(propertyTypeClass);
+        return translator;
     }
     
     protected boolean isIndexable() {

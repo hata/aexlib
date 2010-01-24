@@ -37,22 +37,26 @@ implements EntityIndexableCollectionPropertyInfo<ENTITY, COLLECTION_TYPE, PROPER
 
     public static <ENTITY2 extends EntityBase<ENTITY2>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
     EntityIndexableCollectionPropertyInfoImpl<ENTITY2, COLLECTION_TYPE, PROPERTY_TYPE>
-            getInstance(Class<ENTITY2> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> typeClass, String propertyName) {
-        return new EntityIndexableCollectionPropertyInfoImpl<ENTITY2, COLLECTION_TYPE, PROPERTY_TYPE>(entityClass, collectionClass, typeClass, propertyName);
+            getInstance(Class<ENTITY2> entityClass, Class<COLLECTION_TYPE> collectionClass,
+                    Class<PROPERTY_TYPE> typeClass, DataTypeTranslator translator, String propertyName) {
+        return new EntityIndexableCollectionPropertyInfoImpl<ENTITY2, COLLECTION_TYPE, PROPERTY_TYPE>(entityClass, collectionClass, typeClass, translator, propertyName);
+    }
+
+    public EntityIndexableCollectionPropertyInfoImpl(Class<ENTITY> entityClass,
+            Class<COLLECTION_TYPE> collectionClass,
+            Class<PROPERTY_TYPE> typeClass,
+            DataTypeTranslator translator, String propertyName) {
+        this(entityClass, collectionClass, typeClass, translator, propertyName,
+            new EntityIndexablePropertyInfoImpl<ENTITY, PROPERTY_TYPE>(entityClass, typeClass, translator, propertyName));
     }
 
     EntityIndexableCollectionPropertyInfoImpl(Class<ENTITY> entityClass,
             Class<COLLECTION_TYPE> collectionClass,
-            Class<PROPERTY_TYPE> typeClass, String propertyName) {
-        this(entityClass, collectionClass, typeClass, propertyName,
-            new EntityIndexablePropertyInfoImpl<ENTITY, PROPERTY_TYPE>(entityClass, typeClass, propertyName));
-    }
-
-    EntityIndexableCollectionPropertyInfoImpl(Class<ENTITY> entityClass,
-            Class<COLLECTION_TYPE> collectionClass,
-            Class<PROPERTY_TYPE> typeClass, String propertyName, 
+            Class<PROPERTY_TYPE> typeClass,
+            DataTypeTranslator translator,
+            String propertyName, 
             EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> delegatePropertyInfo) {
-        super(entityClass, collectionClass, typeClass, propertyName);
+        super(entityClass, collectionClass, typeClass, translator, propertyName);
         propertyInfo = delegatePropertyInfo;
     }
 
@@ -60,8 +64,8 @@ implements EntityIndexableCollectionPropertyInfo<ENTITY, COLLECTION_TYPE, PROPER
     public EntityCollectionProperty<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>
     newInstance(EntityBasePropertyAccess<ENTITY> entityInstance) {
         return new EntityCollectionPropertyImpl<ENTITY, COLLECTION_TYPE, PROPERTY_TYPE>(
-                entityInstance, getCollectionType(), getPropertyType(), getName(),
-                DataTypeTranslatorFactory.getIndexableTranslator(getPropertyType()), true);
+                entityInstance, getCollectionType(), getPropertyType(),
+                getDataTypeTranslator(), getName(), true);
     }
 
     public EntityPropertySorter<ENTITY> asc() {
