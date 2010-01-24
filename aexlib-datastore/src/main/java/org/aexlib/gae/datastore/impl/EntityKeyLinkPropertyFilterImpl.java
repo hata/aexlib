@@ -23,8 +23,9 @@ import org.aexlib.gae.datastore.EntityBase;
 public class EntityKeyLinkPropertyFilterImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>> extends
         EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> {
 
+            // TODO: This should use super class's DataTypeTranslator support.
     public EntityKeyLinkPropertyFilterImpl(String propertyName) {
-        super(propertyName);
+        super(propertyName, null);
     }
 
     @Override

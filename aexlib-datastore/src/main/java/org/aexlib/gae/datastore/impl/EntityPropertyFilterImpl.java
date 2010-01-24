@@ -26,12 +26,14 @@ import com.google.appengine.api.datastore.Query;
 
 public class EntityPropertyFilterImpl<ENTITY extends EntityBase<ENTITY>, PROPERTY_TYPE> implements EntityPropertyFilter<ENTITY, PROPERTY_TYPE> {
     private final String propertyName;
+    private final DataTypeTranslator translator;
     private final LinkedList<Query.FilterOperator> opList = new LinkedList<Query.FilterOperator>();
     private final LinkedList<PROPERTY_TYPE> valueList = new LinkedList<PROPERTY_TYPE>();
     
     
-    public EntityPropertyFilterImpl(String propertyName) {
+    public EntityPropertyFilterImpl(String propertyName, DataTypeTranslator translator) {
         this.propertyName = propertyName;
+        this.translator = translator;
     }
 
     public EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> equal(PROPERTY_TYPE value) {
@@ -84,7 +86,7 @@ public class EntityPropertyFilterImpl<ENTITY extends EntityBase<ENTITY>, PROPERT
     }
     
     protected Object getQueryFilterValue(PROPERTY_TYPE value) {
-        return value;
+        return translator != null ? translator.toStoreType(value) : value;
     }
 
 }

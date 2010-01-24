@@ -19,25 +19,29 @@ package org.aexlib.gae.datastore.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.aexlib.gae.datastore.EntityBasePropertyAccess;
 import org.aexlib.gae.datastore.EntityCollectionProperty;
-import org.aexlib.gae.datastore.EntityCollectionPropertyInfo;
 import org.aexlib.gae.datastore.EntityCreator;
 import org.aexlib.gae.datastore.EntityFactory;
-import org.aexlib.gae.datastore.EntityIdFactory;
 import org.aexlib.gae.datastore.EntityIndexableCollectionPropertyInfo;
 import org.aexlib.gae.datastore.EntityIndexablePropertyInfo;
 import org.aexlib.gae.datastore.EntityNameBase;
 import org.aexlib.gae.datastore.EntityNameFactory;
 import org.aexlib.gae.datastore.EntityProperty;
-import org.aexlib.gae.datastore.EntityPropertyInfo;
 import org.aexlib.gae.datastore.EntityPropertyInfoFactory;
 import org.aexlib.gae.datastore.EntityQueryFactory;
 import org.aexlib.gae.datastore.EntityVersionManager;
 
 
 public class TestDocument extends EntityNameBase<TestDocument> {
+    enum Status {
+        REVIEW,
+        EDIT,
+        PUBLISH
+    }
+    
     // There are two factory... This is for test purpose.
     // Normally, factory should only have 1 instance.
     public static final EntityNameFactory<TestDocument> NAME_FACTORY =
@@ -64,18 +68,28 @@ public class TestDocument extends EntityNameBase<TestDocument> {
     static EntityIndexableCollectionPropertyInfo<TestDocument, List, TestChapter> CHAPTERS =
         EntityPropertyInfoFactory.getIndexableKeyLinkCollectionPropertyInfo(TestDocument.class, List.class, TestChapter.class, TestChapter.NAME_FACTORY, "Chapters");
 
+    static EntityIndexablePropertyInfo<TestDocument, Status> STATUS =
+        EntityPropertyInfoFactory.getIndexablePropertyInfo(TestDocument.class, Status.class, "Status");
+    
+    static EntityIndexableCollectionPropertyInfo<TestDocument, Set, Status> STATUS_SET =
+        EntityPropertyInfoFactory.getIndexableCollectionPropertyInfo(TestDocument.class, Set.class, Status.class, "StatusList");
+    
     EntityProperty<TestDocument, Long> version;
     EntityProperty<TestDocument, String> title;
     EntityProperty<TestDocument, TestIdPage> page;
+    EntityProperty<TestDocument, Status> status;
     
     EntityCollectionProperty<TestDocument, List, TestChapter> chapters;
+    EntityCollectionProperty<TestDocument, Set, Status> statusSet;
 
     // This should be a private contructor. I changed it to default for testing.
     TestDocument() {
         version = VERSION.newInstance(this.getEntityPropertyAccess());
         title = TITLE.newInstance(this.getEntityPropertyAccess());
         page = PAGE.newInstance(this.getEntityPropertyAccess());
+        status = STATUS.newInstance(this.getEntityPropertyAccess());
         chapters = CHAPTERS.newInstance(this.getEntityPropertyAccess());
+        statusSet = STATUS_SET.newInstance(this.getEntityPropertyAccess());
 
         initVersionManagers(versionManagerList);
     }

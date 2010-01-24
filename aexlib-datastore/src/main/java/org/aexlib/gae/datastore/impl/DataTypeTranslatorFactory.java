@@ -21,7 +21,9 @@ import com.google.appengine.api.datastore.DataTypeUtils;
 
 public class DataTypeTranslatorFactory {
     public static DataTypeTranslator getIndexableTranslator(Class<?> propertyClass) {
-        return NumberDataTypeTranslatorImpl.getInstance(propertyClass);
+        return propertyClass.isEnum() ?
+                EnumDataTypeTranslatorImpl.getInstance(propertyClass) :
+                    NumberDataTypeTranslatorImpl.getInstance(propertyClass);
     }
 
     public static DataTypeTranslator getUnindexedTranslator(Class<?> propertyClass) {

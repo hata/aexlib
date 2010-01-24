@@ -17,7 +17,9 @@
  */
 package org.aexlib.gae.datastore.impl;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.aexlib.gae.LocalDataStoreTestCase;
 import org.aexlib.gae.datastore.EntityResultIterable;
@@ -38,11 +40,18 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
         super.setUp();
         query = (EntityQueryImpl<TestDocument>)TestDocument.QUERY.query();
         
+        Set<TestDocument.Status> statusSet = new HashSet<TestDocument.Status>();
+        statusSet.add(TestDocument.Status.EDIT);
+        statusSet.add(TestDocument.Status.PUBLISH);
+        
+        
         docs = new TestDocument[5];
         for (int i = 0;i < docs.length;i++) {
             docs[i] = TestDocument.NAME_FACTORY.initInstance("doc" + i);
             docs[i].putIfAbsent();
             docs[i].title.set("title" + i);
+            docs[i].status.set(TestDocument.Status.EDIT);
+            docs[i].statusSet.set(statusSet);
             docs[i].put();
         }
     }
@@ -229,5 +238,19 @@ public class EntityQueryImplTest extends LocalDataStoreTestCase {
             list = TestDocument.QUERY.resultQuery().sort(TestDocument.TITLE.asc()).offset(1).limit(1).cursor(cursor).asList();
         }
     }
+    
+    public void testEnumProperty() {
+        query = (EntityQueryImpl<TestDocument>)TestDocument.QUERY.query().filter(TestDocument.STATUS.equal(TestDocument.Status.EDIT));
+        assertEquals(docs.length, query.countEntities());
+    }
 
+    public void testEnumSetProperty() {
+        query = (EntityQueryImpl<TestDocument>)TestDocument.QUERY.query().filter(TestDocument.STATUS_SET.equal(TestDocument.Status.EDIT));
+        assertEquals(docs.length, query.countEntities());
+    }
+
+    public void testEnumSetPropertyNotFound() {
+        query = (EntityQueryImpl<TestDocument>)TestDocument.QUERY.query().filter(TestDocument.STATUS_SET.equal(TestDocument.Status.REVIEW));
+        assertEquals(0, query.countEntities());
+    }
 }

@@ -84,7 +84,7 @@ implements EntityIndexablePropertyInfo<ENTITY, PROPERTY_TYPE> {
     }
     
     protected EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE> newEntityPropertyFilter() {
-        return new EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE>(getName());
+        return new EntityPropertyFilterImpl<ENTITY, PROPERTY_TYPE>(getName(), getTranslator(getPropertyType()));
     }
 
     @Override

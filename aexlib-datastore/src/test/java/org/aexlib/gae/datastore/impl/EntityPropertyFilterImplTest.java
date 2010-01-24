@@ -36,7 +36,7 @@ public class EntityPropertyFilterImplTest extends LocalDataStoreTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        filter = new EntityPropertyFilterImpl<TestDocument, String>("testProp");
+        filter = new EntityPropertyFilterImpl<TestDocument, String>("testProp", null);
         opList = new ArrayList<FilterOperator>();
         valueList = new ArrayList<Object>();
     }
