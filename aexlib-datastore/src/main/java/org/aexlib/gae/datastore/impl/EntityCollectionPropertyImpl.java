@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.logging.Logger;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityBasePropertyAccess;
 import org.aexlib.gae.datastore.EntityCollectionProperty;

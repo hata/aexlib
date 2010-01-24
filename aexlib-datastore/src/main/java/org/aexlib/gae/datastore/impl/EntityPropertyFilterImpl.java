@@ -19,6 +19,7 @@ package org.aexlib.gae.datastore.impl;
 
 import java.util.LinkedList;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityPropertyFilter;
 

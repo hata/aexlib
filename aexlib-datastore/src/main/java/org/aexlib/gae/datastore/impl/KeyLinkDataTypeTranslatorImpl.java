@@ -17,6 +17,7 @@
  */
 package org.aexlib.gae.datastore.impl;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityBaseFactory;
 

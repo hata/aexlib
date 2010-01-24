@@ -19,7 +19,6 @@ package org.aexlib.gae.datastore;
 
 import java.util.Collection;
 
-import org.aexlib.gae.datastore.impl.DataTypeTranslator;
 import org.aexlib.gae.datastore.impl.DataTypeTranslatorFactory;
 import org.aexlib.gae.datastore.impl.EntityCollectionPropertyInfoImpl;
 import org.aexlib.gae.datastore.impl.EntityIndexableCollectionPropertyInfoImpl;
@@ -45,8 +44,15 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE>
     EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityPropertyInfoImpl.getInstance(entityClass, propertyClass,
+        return getPropertyInfo(entityClass, propertyClass,
                 DataTypeTranslatorFactory.getUnindexedTranslator(propertyClass), propertyName);
+    }
+
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE>
+    EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
+    getPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass,
+            DataTypeTranslator translator, String propertyName) {
+        return EntityPropertyInfoImpl.getInstance(entityClass, propertyClass, translator, propertyName);
     }
 
     /**
@@ -59,8 +65,15 @@ public class EntityPropertyInfoFactory {
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE>
     EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getIndexablePropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityIndexablePropertyInfoImpl.getInstance(entityClass, propertyClass,
+        return getIndexablePropertyInfo(entityClass, propertyClass,
                 DataTypeTranslatorFactory.getIndexableTranslator(propertyClass), propertyName);
+    }
+
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE>
+    EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
+    getIndexablePropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass,
+            DataTypeTranslator translator, String propertyName) {
+        return EntityIndexablePropertyInfoImpl.getInstance(entityClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>>
@@ -69,45 +82,95 @@ public class EntityPropertyInfoFactory {
         return EntityVersionPropertyInfoImpl.getInstance(entityClass, propertyName, currentVersion);
     }
  
+    
+    /**
+     * Get EntityCollectionPropertyInfo instance.
+     * @param entityClass is a class object of EntityBase.
+     * @param collectionClass is a class object for Collection like List, Set, and so on.
+     * @param propertyClass is a property class like String.
+     * @param propertyName is a property name to be stored in datastore.
+     * @return EntityCollectionPropertyInfo instance.
+     */
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
     EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass,
+        return getCollectionPropertyInfo(entityClass, collectionClass, propertyClass,
                 DataTypeTranslatorFactory.getUnindexedTranslator(propertyClass), propertyName);
     }
 
+    /**
+     * Get EntityCollectionPropertyInfo instance with translator.
+     * @param entityClass is a class object of EntityBase.
+     * @param collectionClass is a class object for Collection like List, Set, and so on.
+     * @param propertyClass is a property class like String.
+     * @param translator is a data converter between a property class and datastore.
+     * @param propertyName is a property name to be stored in datastore.
+     * @return EntityCollectionPropertyInfo instance.
+     */
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
+    EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
+    getCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass,
+            Class<PROPERTY_TYPE> propertyClass, DataTypeTranslator translator, String propertyName) {
+        return EntityCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass,
+                translator, propertyName);
+    }
+
+    /**
+     * Get EntityIndexableCollectionPropertyInfo.
+     * @param entityClass is a class object of EntityBase.
+     * @param collectionClass is a class object for Collection like List, Set, and so on.
+     * @param propertyClass is a property class like String.
+     * @param propertyName is a property name to be stored in datastore.
+     * @return EntityCollectionPropertyInfo instance.
+     */
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
     EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getIndexableCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, String propertyName) {
-        return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass,
+        return getIndexableCollectionPropertyInfo(entityClass, collectionClass, propertyClass,
                 DataTypeTranslatorFactory.getIndexableTranslator(propertyClass), propertyName);
+    }
+
+    /**
+     * Get EntityIndexableCollectionPropertyInfo with a translator.
+     * @param entityClass is a class object of EntityBase.
+     * @param collectionClass is a class object for Collection like List, Set, and so on.
+     * @param propertyClass is a property class like String.
+     * @param translator is a data converter between a property class and datastore.
+     * @param propertyName is a property name to be stored in datastore.
+     * @return EntityCollectionPropertyInfo instance.
+     */
+    public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE>
+    EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
+    getIndexableCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass,
+            Class<PROPERTY_TYPE> propertyClass, DataTypeTranslator translator, String propertyName) {
+        return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityPropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
         final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
-        return EntityPropertyInfoImpl.getInstance(entityClass, propertyClass, translator, propertyName);
+        return getPropertyInfo(entityClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityIndexablePropertyInfo<ENTITY_CLASS, PROPERTY_TYPE>
     getIndexableKeyLinkPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
         final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
-        return EntityIndexablePropertyInfoImpl.getInstance(entityClass, propertyClass, translator, propertyName);
+        return getIndexablePropertyInfo(entityClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
         final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
-        return EntityCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, translator, propertyName);
+        return getCollectionPropertyInfo(entityClass, collectionClass, propertyClass, translator, propertyName);
     }
 
     public static <ENTITY_CLASS extends EntityBase<ENTITY_CLASS>, COLLECTION_TYPE extends Collection<PROPERTY_TYPE>, PROPERTY_TYPE extends EntityBase<PROPERTY_TYPE>>
     EntityIndexableCollectionPropertyInfo<ENTITY_CLASS, COLLECTION_TYPE, PROPERTY_TYPE>
     getIndexableKeyLinkCollectionPropertyInfo(Class<ENTITY_CLASS> entityClass, Class<COLLECTION_TYPE> collectionClass, Class<PROPERTY_TYPE> propertyClass, EntityBaseFactory<PROPERTY_TYPE> propertyFactory, String propertyName) {
         final DataTypeTranslator translator = new KeyLinkDataTypeTranslatorImpl<PROPERTY_TYPE>(propertyClass, propertyFactory);
-        return EntityIndexableCollectionPropertyInfoImpl.getInstance(entityClass, collectionClass, propertyClass, translator, propertyName);
+        return getIndexableCollectionPropertyInfo(entityClass, collectionClass, propertyClass, translator, propertyName);
     }
 }

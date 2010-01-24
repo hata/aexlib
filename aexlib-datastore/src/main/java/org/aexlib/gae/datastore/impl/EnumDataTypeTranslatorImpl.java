@@ -19,6 +19,8 @@ package org.aexlib.gae.datastore.impl;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
+
 public class EnumDataTypeTranslatorImpl implements DataTypeTranslator {
     private static final ConcurrentHashMap<Class<?>, EnumDataTypeTranslatorImpl> instances =
         new ConcurrentHashMap<Class<?>, EnumDataTypeTranslatorImpl>();

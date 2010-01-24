@@ -17,6 +17,8 @@
  */
 package org.aexlib.gae.datastore.impl;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
+
 import junit.framework.TestCase;
 
 public class EnumDataTypeTranslatorImplTest extends TestCase {

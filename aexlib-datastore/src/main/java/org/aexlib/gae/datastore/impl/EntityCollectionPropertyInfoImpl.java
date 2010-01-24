@@ -19,6 +19,7 @@ package org.aexlib.gae.datastore.impl;
 
 import java.util.Collection;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
 import org.aexlib.gae.datastore.EntityBase;
 import org.aexlib.gae.datastore.EntityBasePropertyAccess;
 import org.aexlib.gae.datastore.EntityCollectionProperty;

@@ -17,6 +17,8 @@
  */
 package org.aexlib.gae.datastore.impl;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
+
 import com.google.appengine.api.datastore.DataTypeUtils;
 
 public class DataTypeTranslatorFactory {

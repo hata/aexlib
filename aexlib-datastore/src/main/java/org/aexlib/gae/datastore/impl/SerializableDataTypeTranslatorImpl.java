@@ -24,6 +24,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.aexlib.gae.datastore.DataTypeTranslator;
 import org.aexlib.gae.datastore.NotSupportedTypeException;
 
 import com.google.appengine.api.datastore.Blob;
