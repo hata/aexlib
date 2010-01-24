@@ -29,7 +29,7 @@ public class GAEBaseTestCase extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ApiProxy.setEnvironmentForCurrentThread(new TestEnvironment());
-        ApiProxy.setDelegate(new ApiProxyLocalImpl(new File(".")){});
+        ApiProxy.setDelegate(new ApiProxyLocalImpl(new File("target")){});
     }
 
     @Override
