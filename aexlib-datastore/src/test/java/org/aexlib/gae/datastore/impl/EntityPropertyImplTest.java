@@ -118,64 +118,64 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
     }
     
     public void testByte() throws Exception {
-        testPropertyType(Byte.class, (byte)0, (byte)15, Byte.MIN_VALUE, Byte.MAX_VALUE);
+        checkPropertyType(Byte.class, (byte)0, (byte)15, Byte.MIN_VALUE, Byte.MAX_VALUE);
     }
 
     public void testShort() throws Exception {
-        testPropertyType(Short.class, (short)0, (short)15, Short.MIN_VALUE, Short.MAX_VALUE);
+        checkPropertyType(Short.class, (short)0, (short)15, Short.MIN_VALUE, Short.MAX_VALUE);
     }
 
     public void testInteger() throws Exception {
-        testPropertyType(Integer.class, 0, 15, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        checkPropertyType(Integer.class, 0, 15, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     public void testLong() throws Exception {
-        testPropertyType(Long.class, 0L, 15L, Long.MIN_VALUE, Long.MAX_VALUE);
+        checkPropertyType(Long.class, 0L, 15L, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
     public void testFloat() throws Exception {
-        testPropertyType(Float.class, 1.2f, 0f, Float.MIN_VALUE, Float.MAX_VALUE);
+        checkPropertyType(Float.class, 1.2f, 0f, Float.MIN_VALUE, Float.MAX_VALUE);
     }
 
     public void testDouble() throws Exception {
-        testPropertyType(Double.class, 1.2d, 0d, Double.MIN_VALUE, Double.MAX_VALUE);
+        checkPropertyType(Double.class, 1.2d, 0d, Double.MIN_VALUE, Double.MAX_VALUE);
     }
 
     public void testDate() throws Exception {
-        testPropertyType(Date.class, new Date());
+        checkPropertyType(Date.class, new Date());
     }
     
     public void testText() throws Exception {
-        testPropertyType(Text.class, new Text("test"));
+        checkPropertyType(Text.class, new Text("test"));
     }
 
     public void testBlob() throws Exception {
-        testPropertyType(Blob.class, new Blob("test".getBytes()));
+        checkPropertyType(Blob.class, new Blob("test".getBytes()));
     }
 
     public void testLink() throws Exception {
-        testPropertyType(Link.class, new Link("http://localhost/"));
+        checkPropertyType(Link.class, new Link("http://localhost/"));
     }
 
     public void testKey() throws Exception {
-        testPropertyType(Key.class, doc.getKey());
+        checkPropertyType(Key.class, doc.getKey());
     }
     
     public void testUser() throws Exception {
         UserService service = UserServiceFactory.getUserService();
         User user = service.getCurrentUser();
         assertNotNull(user);
-        testPropertyType(User.class, user);
+        checkPropertyType(User.class, user);
     }
 
     public void testNull() throws Exception {
-        testPropertyType(String.class, (String)null);
+        checkPropertyType(String.class, (String)null);
     }
 
     public void testSerialized() throws Exception {
         SerializedObject value = new SerializedObject();
         value.value = 5;
-        testPropertyType(SerializedObject.class, value);
+        checkPropertyType(SerializedObject.class, value);
     }
 
     public void testSupportSerializableDataType() throws Exception {
@@ -202,12 +202,29 @@ public class EntityPropertyImplTest extends LocalDataStoreTestCase {
             for (int k = 0;k < chars.length;k++) {
                 chars[k] = 'a';
             }
-            testPropertyType(String.class, new String(chars));
+            checkPropertyType(String.class, new String(chars));
         }
     }
 
+    public void testByteArrayProperty() throws Exception {
+        TestDataType dataType = TestDataType.ID_FACTORY.initInstance();
+        dataType.bytes.set(new byte[]{1,2,3});
+        dataType.putIfAbsent();
+        dataType = TestDataType.ID_FACTORY.initInstance(dataType.getKey());
+        assertEquals(new String(new byte[] {1,2,3}), new String(dataType.bytes.get()));
+        assertEquals(new Blob(new byte[]{1,2,3}), dataType.getStoredBytesData());
+    }
+    
+    public void testIndexableByteArrayProperty() throws Exception {
+        TestDataType dataType = TestDataType.ID_FACTORY.initInstance();
+        dataType.indexableBytes.set(new byte[]{1,2,3});
+        dataType.putIfAbsent();
+        dataType = TestDataType.ID_FACTORY.initInstance(dataType.getKey());
+        assertEquals(new String(new byte[] {1,2,3}), new String(dataType.indexableBytes.get()));
+        assertEquals(new ShortBlob(new byte[]{1,2,3}), dataType.getStoredIndexableBytesData());
+    }
 
-    public <T> void testPropertyType(Class<T> typeClass, T ...values) throws Exception {
+    public <T> void checkPropertyType(Class<T> typeClass, T ...values) throws Exception {
         String propName = typeClass.getSimpleName() + "Property";
 
         EntityPropertyImpl<EntityPropertyTest, T> prop = createProperty(typeClass, propName);

@@ -23,17 +23,37 @@ import com.google.appengine.api.datastore.DataTypeUtils;
 
 public class DataTypeTranslatorFactory {
     public static DataTypeTranslator getIndexableTranslator(Class<?> propertyClass) {
-        return propertyClass.isEnum() ?
-                EnumDataTypeTranslatorImpl.getInstance(propertyClass) :
-                    NumberDataTypeTranslatorImpl.getInstance(propertyClass);
+        if (propertyClass.isEnum()) {
+            return EnumDataTypeTranslatorImpl.getInstance(propertyClass);
+        } else {
+            DataTypeTranslator translator = NumberDataTypeTranslatorImpl.getInstance(propertyClass);
+            if (translator != null) {
+                return translator;
+            }
+            translator = IndexableByteArrayDataTypeTranslatorImpl.getInstance(propertyClass);
+            if (translator != null) {
+                return translator;
+            }
+        }
+
+        return null;
     }
 
     public static DataTypeTranslator getUnindexedTranslator(Class<?> propertyClass) {
+        if (propertyClass.isEnum()) {
+            return EnumDataTypeTranslatorImpl.getInstance(propertyClass);
+        }
+
         DataTypeTranslator translator = NumberDataTypeTranslatorImpl.getInstance(propertyClass);
         if (translator != null) {
             return translator;
         }
 
+        translator = ByteArrayDataTypeTranslatorImpl.getInstance(propertyClass);
+        if (translator != null) {
+            return translator;
+        }
+        
         // Unindexed String can replace with Text because it is not searched.
         translator = TextDataTypeTranslatorImpl.getInstance(propertyClass);
         if (translator != null) {

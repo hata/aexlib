@@ -24,6 +24,10 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
  * Byte to Long and vise-vasa.
  * And if PROPERTY_TYPE is String and it is not indexed,
  * the object may be stored as Text if the text is long.
+ * If PROPERTY_TYPE is enum object. It is stored as String and
+ * returned as enum object.
+ * If PROPERTY_TYPE is byte[] and indexable, it is stored as ShortBlob.
+ * Otherwise, it is stored as Blob.
  * If PROPERTY_TYPE is not supported instances but Serializable
  * object and a property is not indexed, it will be stored as
  * Blob object to use ObjectOutputStream/ObjectInputStream.

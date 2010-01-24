@@ -160,6 +160,15 @@ public class EntityPropertyInfoImplTest extends LocalDataStoreTestCase {
         }
     }
 
+    public void testEnumData() throws Exception {
+        TestDataType type = TestDataType.ID_FACTORY.initInstance();
+        type.enumData.set(TestDataType.Status.NEW);
+        type.putIfAbsent();
+        type = TestDataType.ID_FACTORY.initInstance(type.getKey());
+        assertEquals(TestDataType.Status.NEW.toString(), type.getStoredEnumData());
+        assertEquals(TestDataType.Status.NEW, type.enumData.get());
+    }
+
     static class SerializableObject implements Serializable {
         public int value;
 

@@ -133,6 +133,16 @@ public class EntityIndexablePropertyInfoImplTest extends LocalDataStoreTestCase 
             // ok
         }
     }
+    
+    public void testIndexableEnumData() throws Exception {
+        TestDataType type = TestDataType.ID_FACTORY.initInstance();
+        type.indexableEnumData.set(TestDataType.Status.NEW);
+        type.putIfAbsent();
+        type = TestDataType.ID_FACTORY.initInstance(type.getKey());
+        assertEquals(TestDataType.Status.NEW.toString(), type.getStoredIndexableEnumData());
+        assertEquals(TestDataType.Status.NEW, type.indexableEnumData.get());
+    }
+
 
     private void checkFilter(EntityPropertyFilterImpl<TestDocument, String> filter, FilterOperator op) {
         filter.addFilter(new EntityQueryMock());
