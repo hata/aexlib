@@ -26,11 +26,23 @@ import com.google.appengine.api.datastore.Link;
 public class StringToLinkTranslator implements DataTypeTranslator {
 
     public Object toStoreType(Object userData) {
-        return userData != null ? new Link((String)userData) : null;
+        if (userData instanceof String) {
+            return new Link((String)userData);
+        } else if (userData instanceof Link) {
+            return (Link)userData;
+        } else {
+            return null;
+        }
     }
 
     public Object toUserType(Object storedData) {
-        return storedData != null ? ((Link)storedData).getValue() : null;
+        if (storedData instanceof String) {
+            return storedData;
+        } else if (storedData instanceof Link) {
+            return ((Link)storedData).getValue();
+        } else {
+            return null;
+        }
     }
 
 }

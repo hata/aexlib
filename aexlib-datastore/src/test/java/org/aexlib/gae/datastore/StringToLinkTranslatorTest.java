@@ -41,8 +41,18 @@ public class StringToLinkTranslatorTest extends TestCase {
         assertNull(translator.toStoreType(null));
     }
 
+    public void testToStoreTypeForLink() throws Exception {
+        assertEquals(new Link("http://localhost"), translator.toStoreType(new Link("http://localhost")));
+        assertNull(translator.toStoreType(new Object()));
+    }
+
     public void testToUserType() throws Exception {
         assertEquals("http://localhost", translator.toUserType(new Link("http://localhost")));
         assertNull(translator.toUserType(null));
+    }
+
+    public void testToUserTypeForString() throws Exception {
+        assertEquals("http://localhost", translator.toUserType("http://localhost"));
+        assertNull(translator.toUserType(new Object()));
     }
 }
