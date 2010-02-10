@@ -43,7 +43,8 @@ public class SampleEntityBaseCodeGenerator {
         return new Class<?>[]{
                 ParentSample.class,
                 Sample.class,
-                NoVersionSample.class
+                NoVersionSample.class,
+                PrimitiveClassDef.class
                 };
     }
 

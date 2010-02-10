@@ -30,6 +30,10 @@ public class DataTypeTranslatorFactory {
             if (translator != null) {
                 return translator;
             }
+            translator = CharacterDataTypeTranslatorImpl.getInstance(propertyClass);
+            if (translator != null) {
+                return translator;
+            }
             translator = IndexableByteArrayDataTypeTranslatorImpl.getInstance(propertyClass);
             if (translator != null) {
                 return translator;
