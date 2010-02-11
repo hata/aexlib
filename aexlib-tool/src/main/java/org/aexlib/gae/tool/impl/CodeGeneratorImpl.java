@@ -85,6 +85,10 @@ public class CodeGeneratorImpl implements CodeGenerator {
     public static final String PROPERTY_TYPE = "${property.type}";
     public static final String PROPERTY_NAME_LOWERCASE = "${property.name.lowercase}";
 
+    // Primitive property type.
+    public static final String PRIMITIVE_TYPE = "${primitive.type}";
+    public static final String PRIMITIVE_DEFAULT_TYPE = "${primitive.default.value}";
+
     // PropertyInfoField.txt
     public static final String PROPERTY_NAME = "${property.name}";
     public static final String PROPERTY_NAME_UPPERCASE = "${property.name.uppercase}";
@@ -137,7 +141,9 @@ public class CodeGeneratorImpl implements CodeGenerator {
             CollectionPropertySetMethod,
             KeyLinkPropertyInfoField,
             KeyLinkCollectionPropertyInfoField,
-            RevisionInitField
+            RevisionInitField,
+            PrimitivePropertyGetMethod,
+            PrimitivePropertySetMethod
     };
     
     
@@ -363,12 +369,24 @@ public class CodeGeneratorImpl implements CodeGenerator {
                     // It may be better to use import.
                     // If a primitive type is set, package is null.
                     if (fieldClass.isPrimitive()) {
+                        tokenMap.put(PRIMITIVE_TYPE, fieldClass.getSimpleName());
                         tokenMap.put(PROPERTY_TYPE, primitiveToClassMap.get(fieldClass).getSimpleName());
+
+                        field.setAccessible(true);
+                        Object proxy = getInstance(entityDef);
+                        Object defaultPrimitiveValue = field.get(proxy);
+                        if (defaultPrimitiveValue == null) {
+                            tokenMap.put(PRIMITIVE_DEFAULT_TYPE, "0");
+                        } else {
+                            tokenMap.put(PRIMITIVE_DEFAULT_TYPE, defaultValueToString(defaultPrimitiveValue));
+                        }
+
                     } else if (fieldClass != null && fieldClass.getPackage() != null && fieldClass.getPackage().equals("java.lang")) {
                         tokenMap.put(PROPERTY_TYPE, fieldClass.getSimpleName());
                     } else {
                         tokenMap.put(PROPERTY_TYPE, fieldClass.getName());
                     }
+                    
                     isKeyLink = isKeyLink(fieldClass);
                     if (isKeyLink) {
                         setKeyLinkValue(fieldClass, tokenMap);
@@ -380,8 +398,14 @@ public class CodeGeneratorImpl implements CodeGenerator {
                         infosBuilder.append(templateMap.get(Template.PropertyInfoField).apply(tokenMap)).append(RET);
                     }
                     fieldsBuilder.append(templateMap.get(Template.PropertyField).apply(tokenMap)).append(RET);
-                    getMethodsBuilder.append(templateMap.get(Template.PropertyGetMethod).apply(tokenMap));
-                    setMethodsBuilder.append(templateMap.get(Template.PropertySetMethod).apply(tokenMap));
+
+                    if (fieldClass.isPrimitive()) {
+                        getMethodsBuilder.append(templateMap.get(Template.PrimitivePropertyGetMethod).apply(tokenMap));
+                        setMethodsBuilder.append(templateMap.get(Template.PrimitivePropertySetMethod).apply(tokenMap));
+                    } else {
+                        getMethodsBuilder.append(templateMap.get(Template.PropertyGetMethod).apply(tokenMap));
+                        setMethodsBuilder.append(templateMap.get(Template.PropertySetMethod).apply(tokenMap));
+                    }
                 }
 
             }
@@ -413,7 +437,21 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
     
     private String defaultValueToString(Object o) {
-        return o.toString(); // TODO: This should change for some objects.
+        if (o instanceof Float) {
+            return o.toString() + "f";
+        } else if (o instanceof Long) {
+            return o.toString() + "L";
+        } else if (o instanceof Character) {
+            String zeros = "0000";
+            String value = Integer.toHexString(((Character)o).charValue()).toUpperCase();
+            if (value.length() < zeros.length()) {
+                value = zeros.substring(0, zeros.length() - value.length()) + value;
+            }
+            // This back slash is reduce while regex. Finally, this will become unicode like '\u0000'.
+            return "'\\\\\\\\u" + value + "'";
+        } else {
+            return o.toString(); // TODO: This should change for some objects.
+        }
     }
     
 

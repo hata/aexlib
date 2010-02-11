@@ -1,0 +1,4 @@
+    public ${primitive.type} get${property.name.capital}() throws EntityNotFoundException {
+        final ${property.type} value =  ${property.name.lowercase}.get();
+        return value != null ? value.${primitive.type}Value() : ${primitive.default.value};
+    }

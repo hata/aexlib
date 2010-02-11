@@ -15,35 +15,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.aexlib.gae.tool;
+package org.aexlib.gae.tool.def;
 
 import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.KeyTypeValue;
 
 @KeyType(KeyTypeValue.ID)
-public class PrimitiveClassDef {
+public class PrimitiveTypeDef {
     
-    Byte byteNoIndex;
-    Short shortNoIndex;
-    Character charNoIndex;
-    Integer intNoIndex;
-    Long longNoIndex;
+    byte byteNoIndex;
+    short shortNoIndex;
+    char charNoIndex;
+    int intNoIndex;
+    long longNoIndex;
+    float floatNoIndex;
+    double doubleNoIndex;
     
     @Indexable
-    Byte byteIndex;
+    byte byteIndex = 1;
 
     @Indexable
-    Short shortIndex;
+    short shortIndex = 2;
 
     @Indexable
-    Character charIndex;
+    char charIndex = 'a';
 
     @Indexable
-    Integer intIndex;
+    int intIndex = 3;
 
     @Indexable
-    Long longIndex;
+    long longIndex = 4L;
 
+    @Indexable
+    float floatIndex = 5.0f;
 
+    @Indexable
+    double doubleIndex = 6.0f;
 }

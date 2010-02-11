@@ -17,7 +17,8 @@
  */
 package org.aexlib.gae.tool;
 
-public class PrimitiveTest extends ToolGAEBaseTestCase {
+
+public class PrimitiveClassTest extends ToolGAEBaseTestCase {
 
     org.aexlib.gae.tool.sample.PrimitiveClassDef entity;
 

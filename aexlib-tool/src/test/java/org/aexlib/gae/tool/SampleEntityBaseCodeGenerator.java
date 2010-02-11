@@ -20,6 +20,12 @@ package org.aexlib.gae.tool;
 import java.io.File;
 import java.io.IOException;
 
+import org.aexlib.gae.tool.def.NoVersionSample;
+import org.aexlib.gae.tool.def.ParentSample;
+import org.aexlib.gae.tool.def.PrimitiveClassDef;
+import org.aexlib.gae.tool.def.PrimitiveTypeDef;
+import org.aexlib.gae.tool.def.Sample;
+
 public class SampleEntityBaseCodeGenerator {
     private final String outputDir;
 
@@ -44,7 +50,8 @@ public class SampleEntityBaseCodeGenerator {
                 ParentSample.class,
                 Sample.class,
                 NoVersionSample.class,
-                PrimitiveClassDef.class
+                PrimitiveClassDef.class,
+                PrimitiveTypeDef.class
                 };
     }
 

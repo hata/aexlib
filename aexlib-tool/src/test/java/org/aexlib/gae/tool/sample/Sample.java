@@ -116,8 +116,9 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
     public java.util.List<java.lang.String> getReferences() throws EntityNotFoundException {
         return references.get();
     }
-    public Integer getNumber() throws EntityNotFoundException {
-        return number.get();
+    public int getNumber() throws EntityNotFoundException {
+        final Integer value =  number.get();
+        return value != null ? value.intValue() : 0;
     }
 
 
@@ -161,8 +162,8 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
         return this;
     }
     
-    public Sample setNumber(final Integer value) throws EntityNotFoundException {
-        this.number.set(value);
+    public Sample setNumber(final int value) throws EntityNotFoundException {
+        this.number.set(Integer.valueOf(value));
         return this;
     }
 
@@ -170,6 +171,5 @@ public class Sample extends EntityChildIdBase<Sample, ParentSample> {
         number.remove();
         return this;
     }
-    
 
 }

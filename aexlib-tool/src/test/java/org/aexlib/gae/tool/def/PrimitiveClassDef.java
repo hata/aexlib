@@ -1,7 +1,7 @@
 /*
  * $Id$
  * 
- * Copyright 2009 Hiroki Ata
+ * Copyright 2010 Hiroki Ata
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.aexlib.gae.tool;
-
-import java.util.List;
+package org.aexlib.gae.tool.def;
 
 import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.KeyTypeValue;
-import org.aexlib.gae.tool.anno.Kind;
-import org.aexlib.gae.tool.anno.Version;
 
-
-@KeyType(KeyTypeValue.NAME)
-@Kind("ParentSample")
-public class ParentSample {
-    @Version("version")
-    Long version;
+@KeyType(KeyTypeValue.ID)
+public class PrimitiveClassDef {
+    
+    Byte byteNoIndex;
+    Short shortNoIndex;
+    Character charNoIndex;
+    Integer intNoIndex;
+    Long longNoIndex;
+    
+    @Indexable
+    Byte byteIndex;
 
     @Indexable
-    List<Sample> children;
-    
-    Sample child;
+    Short shortIndex;
+
+    @Indexable
+    Character charIndex;
+
+    @Indexable
+    Integer intIndex;
+
+    @Indexable
+    Long longIndex;
+
+
 }
