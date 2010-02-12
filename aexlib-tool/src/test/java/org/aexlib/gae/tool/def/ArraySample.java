@@ -20,40 +20,34 @@ package org.aexlib.gae.tool.def;
 import org.aexlib.gae.tool.anno.Indexable;
 import org.aexlib.gae.tool.anno.KeyType;
 import org.aexlib.gae.tool.anno.KeyTypeValue;
+import org.aexlib.gae.tool.anno.Kind;
 
+@Kind("ArraySample")
 @KeyType(KeyTypeValue.ID)
-public class PrimitiveTypeDef {
+public class ArraySample {
 
-    boolean booleanNoIndex;
-    byte byteNoIndex;
-    short shortNoIndex;
-    char charNoIndex;
-    int intNoIndex;
-    long longNoIndex;
-    float floatNoIndex;
-    double doubleNoIndex;
+    boolean[] booleanArray;
 
-    @Indexable
-    boolean booleanIndex = true;
+    byte[] byteArray;
 
-    @Indexable
-    byte byteIndex = 1;
-
-    @Indexable
-    short shortIndex = 2;
-
-    @Indexable
-    char charIndex = 'a';
+    short[] shortArray;
+    
+    char[] charArray;
+    
+    int[] intArray;
+    
+    long[] longArray;
+    
+    float[] floatArray;
+    
+    double[] doubleArray;
+    
+    String[] stringArray;
 
     @Indexable
-    int intIndex = 3;
-
-    @Indexable
-    long longIndex = 4L;
-
-    @Indexable
-    float floatIndex = 5.0f;
-
-    @Indexable
-    double doubleIndex = 6.0f;
+    byte[] byteIndexableArray;
+    
+    byte[][] byteArray2;
+    
+    String[][] stringArray2;
 }

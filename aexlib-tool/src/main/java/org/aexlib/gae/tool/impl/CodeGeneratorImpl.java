@@ -163,7 +163,13 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private static Map<Class<?>, Class<?>> primitiveToClassMap = new HashMap<Class<?>, Class<?>>();
     
     
+    // for array
+    private static final Map<String, String> ARRAY_KEYWORD_TO_CLASSNAME = new HashMap<String, String>();
+    
+    
     static {
+        
+        primitiveToClassMap.put(boolean.class, Boolean.class);
         primitiveToClassMap.put(byte.class, Byte.class);
         primitiveToClassMap.put(short.class, Short.class);
         primitiveToClassMap.put(char.class, Character.class);
@@ -171,7 +177,21 @@ public class CodeGeneratorImpl implements CodeGenerator {
         primitiveToClassMap.put(long.class, Long.class);
         primitiveToClassMap.put(float.class, Float.class);
         primitiveToClassMap.put(double.class, Double.class);
+        primitiveToClassMap.put(void.class, Void.class);
+        
+        //http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/java/lang/Class.html
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[Z", "boolean");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[B", "byte");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[C", "char");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[L", null);
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[D", "double");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[F", "float");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[I", "int");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[J", "long");
+        ARRAY_KEYWORD_TO_CLASSNAME.put("[S", "short");
+        
     }
+
 
     private void logMessage(String message) {
         System.out.println(message);
@@ -381,6 +401,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
                             tokenMap.put(PRIMITIVE_DEFAULT_TYPE, defaultValueToString(defaultPrimitiveValue));
                         }
 
+                    } else if (fieldClass.isArray()) {
+                        tokenMap.put(PROPERTY_TYPE, toArrayString(fieldClass));
                     } else if (fieldClass != null && fieldClass.getPackage() != null && fieldClass.getPackage().equals("java.lang")) {
                         tokenMap.put(PROPERTY_TYPE, fieldClass.getSimpleName());
                     } else {
@@ -657,6 +679,37 @@ public class CodeGeneratorImpl implements CodeGenerator {
             return null;
         }
         
+    }
+    
+
+    /**
+     * Create a source string for array like byte[] from a field class.
+     * @param arrayFieldClass is a field class which represents an array class.
+     * @return string like 'byte[]'.
+     */
+    private String toArrayString(Class<?> arrayFieldClass) {
+        if (!arrayFieldClass.isArray()) {
+            return null;
+        }
+
+        final String name = arrayFieldClass.getName();
+
+        for (Map.Entry<String, String> entry : ARRAY_KEYWORD_TO_CLASSNAME.entrySet()) {
+            int index = name.indexOf(entry.getKey());
+            if (index != -1) {
+                String className = entry.getValue();
+                if (className == null) { //e.g.  [Ljava.lang.String;
+                    className = name.substring(index + entry.getKey().length(), name.length() -1);
+                }
+                StringBuffer buff = new StringBuffer(className);
+                for (int i = 0;i < (index + 1);i++) {
+                    buff.append("[]");
+                }
+                return buff.toString();
+            }
+        }
+        
+        return null;
     }
 
 }

@@ -27,6 +27,9 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
 
     // Property Info fields.
+    public static final EntityPropertyInfo<PrimitiveClassDef, java.lang.Boolean> BOOLEAN_NO_INDEX =
+        EntityPropertyInfoFactory.getPropertyInfo(PrimitiveClassDef.class, java.lang.Boolean.class, "BooleanNoIndex");
+
     public static final EntityPropertyInfo<PrimitiveClassDef, java.lang.Byte> BYTE_NO_INDEX =
         EntityPropertyInfoFactory.getPropertyInfo(PrimitiveClassDef.class, java.lang.Byte.class, "ByteNoIndex");
 
@@ -41,6 +44,15 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
     public static final EntityPropertyInfo<PrimitiveClassDef, java.lang.Long> LONG_NO_INDEX =
         EntityPropertyInfoFactory.getPropertyInfo(PrimitiveClassDef.class, java.lang.Long.class, "LongNoIndex");
+
+    public static final EntityPropertyInfo<PrimitiveClassDef, java.lang.Float> FLOAT_NO_INDEX =
+        EntityPropertyInfoFactory.getPropertyInfo(PrimitiveClassDef.class, java.lang.Float.class, "FloatNoIndex");
+
+    public static final EntityPropertyInfo<PrimitiveClassDef, java.lang.Double> DOUBLE_NO_INDEX =
+        EntityPropertyInfoFactory.getPropertyInfo(PrimitiveClassDef.class, java.lang.Double.class, "DoubleNoIndex");
+
+    public static final EntityIndexablePropertyInfo<PrimitiveClassDef, java.lang.Boolean> BOOLEAN_INDEX =
+        EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveClassDef.class, java.lang.Boolean.class, "BooleanIndex");
 
     public static final EntityIndexablePropertyInfo<PrimitiveClassDef, java.lang.Byte> BYTE_INDEX =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveClassDef.class, java.lang.Byte.class, "ByteIndex");
@@ -57,12 +69,20 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
     public static final EntityIndexablePropertyInfo<PrimitiveClassDef, java.lang.Long> LONG_INDEX =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveClassDef.class, java.lang.Long.class, "LongIndex");
 
+    public static final EntityIndexablePropertyInfo<PrimitiveClassDef, java.lang.Float> FLOAT_INDEX =
+        EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveClassDef.class, java.lang.Float.class, "FloatIndex");
+
+    public static final EntityIndexablePropertyInfo<PrimitiveClassDef, java.lang.Double> DOUBLE_INDEX =
+        EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveClassDef.class, java.lang.Double.class, "DoubleIndex");
+
 
 
     // Version field.
 
 
     // Property fields.
+    private final EntityProperty<PrimitiveClassDef, java.lang.Boolean> booleanNoIndex;
+
     private final EntityProperty<PrimitiveClassDef, java.lang.Byte> byteNoIndex;
 
     private final EntityProperty<PrimitiveClassDef, java.lang.Short> shortNoIndex;
@@ -72,6 +92,12 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
     private final EntityProperty<PrimitiveClassDef, java.lang.Integer> intNoIndex;
 
     private final EntityProperty<PrimitiveClassDef, java.lang.Long> longNoIndex;
+
+    private final EntityProperty<PrimitiveClassDef, java.lang.Float> floatNoIndex;
+
+    private final EntityProperty<PrimitiveClassDef, java.lang.Double> doubleNoIndex;
+
+    private final EntityProperty<PrimitiveClassDef, java.lang.Boolean> booleanIndex;
 
     private final EntityProperty<PrimitiveClassDef, java.lang.Byte> byteIndex;
 
@@ -83,6 +109,10 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
     private final EntityProperty<PrimitiveClassDef, java.lang.Long> longIndex;
 
+    private final EntityProperty<PrimitiveClassDef, java.lang.Float> floatIndex;
+
+    private final EntityProperty<PrimitiveClassDef, java.lang.Double> doubleIndex;
+
 
 
     // Constructor. This is private to be created by FACTORY.
@@ -92,6 +122,8 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
 
         // Initialize fields.
+        booleanNoIndex = BOOLEAN_NO_INDEX.newInstance(getEntityPropertyAccess());
+
         byteNoIndex = BYTE_NO_INDEX.newInstance(getEntityPropertyAccess());
 
         shortNoIndex = SHORT_NO_INDEX.newInstance(getEntityPropertyAccess());
@@ -101,6 +133,12 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
         intNoIndex = INT_NO_INDEX.newInstance(getEntityPropertyAccess());
 
         longNoIndex = LONG_NO_INDEX.newInstance(getEntityPropertyAccess());
+
+        floatNoIndex = FLOAT_NO_INDEX.newInstance(getEntityPropertyAccess());
+
+        doubleNoIndex = DOUBLE_NO_INDEX.newInstance(getEntityPropertyAccess());
+
+        booleanIndex = BOOLEAN_INDEX.newInstance(getEntityPropertyAccess());
 
         byteIndex = BYTE_INDEX.newInstance(getEntityPropertyAccess());
 
@@ -112,6 +150,10 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
         longIndex = LONG_INDEX.newInstance(getEntityPropertyAccess());
 
+        floatIndex = FLOAT_INDEX.newInstance(getEntityPropertyAccess());
+
+        doubleIndex = DOUBLE_INDEX.newInstance(getEntityPropertyAccess());
+
 
 
 
@@ -119,6 +161,9 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
 
 
+    public java.lang.Boolean getBooleanNoIndex() throws EntityNotFoundException {
+        return booleanNoIndex.get();
+    }
     public java.lang.Byte getByteNoIndex() throws EntityNotFoundException {
         return byteNoIndex.get();
     }
@@ -133,6 +178,15 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
     }
     public java.lang.Long getLongNoIndex() throws EntityNotFoundException {
         return longNoIndex.get();
+    }
+    public java.lang.Float getFloatNoIndex() throws EntityNotFoundException {
+        return floatNoIndex.get();
+    }
+    public java.lang.Double getDoubleNoIndex() throws EntityNotFoundException {
+        return doubleNoIndex.get();
+    }
+    public java.lang.Boolean getBooleanIndex() throws EntityNotFoundException {
+        return booleanIndex.get();
     }
     public java.lang.Byte getByteIndex() throws EntityNotFoundException {
         return byteIndex.get();
@@ -149,8 +203,24 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
     public java.lang.Long getLongIndex() throws EntityNotFoundException {
         return longIndex.get();
     }
+    public java.lang.Float getFloatIndex() throws EntityNotFoundException {
+        return floatIndex.get();
+    }
+    public java.lang.Double getDoubleIndex() throws EntityNotFoundException {
+        return doubleIndex.get();
+    }
 
 
+    public PrimitiveClassDef setBooleanNoIndex(final java.lang.Boolean value) throws EntityNotFoundException {
+        this.booleanNoIndex.set(value);
+        return this;
+    }
+
+    public PrimitiveClassDef removeBooleanNoIndex() throws EntityNotFoundException {
+        booleanNoIndex.remove();
+        return this;
+    }
+    
     public PrimitiveClassDef setByteNoIndex(final java.lang.Byte value) throws EntityNotFoundException {
         this.byteNoIndex.set(value);
         return this;
@@ -201,6 +271,36 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
         return this;
     }
     
+    public PrimitiveClassDef setFloatNoIndex(final java.lang.Float value) throws EntityNotFoundException {
+        this.floatNoIndex.set(value);
+        return this;
+    }
+
+    public PrimitiveClassDef removeFloatNoIndex() throws EntityNotFoundException {
+        floatNoIndex.remove();
+        return this;
+    }
+    
+    public PrimitiveClassDef setDoubleNoIndex(final java.lang.Double value) throws EntityNotFoundException {
+        this.doubleNoIndex.set(value);
+        return this;
+    }
+
+    public PrimitiveClassDef removeDoubleNoIndex() throws EntityNotFoundException {
+        doubleNoIndex.remove();
+        return this;
+    }
+    
+    public PrimitiveClassDef setBooleanIndex(final java.lang.Boolean value) throws EntityNotFoundException {
+        this.booleanIndex.set(value);
+        return this;
+    }
+
+    public PrimitiveClassDef removeBooleanIndex() throws EntityNotFoundException {
+        booleanIndex.remove();
+        return this;
+    }
+    
     public PrimitiveClassDef setByteIndex(final java.lang.Byte value) throws EntityNotFoundException {
         this.byteIndex.set(value);
         return this;
@@ -248,6 +348,26 @@ public class PrimitiveClassDef extends EntityIdBase<PrimitiveClassDef> {
 
     public PrimitiveClassDef removeLongIndex() throws EntityNotFoundException {
         longIndex.remove();
+        return this;
+    }
+    
+    public PrimitiveClassDef setFloatIndex(final java.lang.Float value) throws EntityNotFoundException {
+        this.floatIndex.set(value);
+        return this;
+    }
+
+    public PrimitiveClassDef removeFloatIndex() throws EntityNotFoundException {
+        floatIndex.remove();
+        return this;
+    }
+    
+    public PrimitiveClassDef setDoubleIndex(final java.lang.Double value) throws EntityNotFoundException {
+        this.doubleIndex.set(value);
+        return this;
+    }
+
+    public PrimitiveClassDef removeDoubleIndex() throws EntityNotFoundException {
+        doubleIndex.remove();
         return this;
     }
     

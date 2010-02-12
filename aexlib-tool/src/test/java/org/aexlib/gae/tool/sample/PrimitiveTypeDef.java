@@ -27,6 +27,9 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
 
 
     // Property Info fields.
+    public static final EntityPropertyInfo<PrimitiveTypeDef, Boolean> BOOLEAN_NO_INDEX =
+        EntityPropertyInfoFactory.getPropertyInfo(PrimitiveTypeDef.class, Boolean.class, "BooleanNoIndex");
+
     public static final EntityPropertyInfo<PrimitiveTypeDef, Byte> BYTE_NO_INDEX =
         EntityPropertyInfoFactory.getPropertyInfo(PrimitiveTypeDef.class, Byte.class, "ByteNoIndex");
 
@@ -47,6 +50,9 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
 
     public static final EntityPropertyInfo<PrimitiveTypeDef, Double> DOUBLE_NO_INDEX =
         EntityPropertyInfoFactory.getPropertyInfo(PrimitiveTypeDef.class, Double.class, "DoubleNoIndex");
+
+    public static final EntityIndexablePropertyInfo<PrimitiveTypeDef, Boolean> BOOLEAN_INDEX =
+        EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveTypeDef.class, Boolean.class, "BooleanIndex");
 
     public static final EntityIndexablePropertyInfo<PrimitiveTypeDef, Byte> BYTE_INDEX =
         EntityPropertyInfoFactory.getIndexablePropertyInfo(PrimitiveTypeDef.class, Byte.class, "ByteIndex");
@@ -75,6 +81,8 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
 
 
     // Property fields.
+    private final EntityProperty<PrimitiveTypeDef, Boolean> booleanNoIndex;
+
     private final EntityProperty<PrimitiveTypeDef, Byte> byteNoIndex;
 
     private final EntityProperty<PrimitiveTypeDef, Short> shortNoIndex;
@@ -88,6 +96,8 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
     private final EntityProperty<PrimitiveTypeDef, Float> floatNoIndex;
 
     private final EntityProperty<PrimitiveTypeDef, Double> doubleNoIndex;
+
+    private final EntityProperty<PrimitiveTypeDef, Boolean> booleanIndex;
 
     private final EntityProperty<PrimitiveTypeDef, Byte> byteIndex;
 
@@ -112,6 +122,8 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
 
 
         // Initialize fields.
+        booleanNoIndex = BOOLEAN_NO_INDEX.newInstance(getEntityPropertyAccess());
+
         byteNoIndex = BYTE_NO_INDEX.newInstance(getEntityPropertyAccess());
 
         shortNoIndex = SHORT_NO_INDEX.newInstance(getEntityPropertyAccess());
@@ -125,6 +137,8 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
         floatNoIndex = FLOAT_NO_INDEX.newInstance(getEntityPropertyAccess());
 
         doubleNoIndex = DOUBLE_NO_INDEX.newInstance(getEntityPropertyAccess());
+
+        booleanIndex = BOOLEAN_INDEX.newInstance(getEntityPropertyAccess());
 
         byteIndex = BYTE_INDEX.newInstance(getEntityPropertyAccess());
 
@@ -147,6 +161,10 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
 
 
 
+    public boolean getBooleanNoIndex() throws EntityNotFoundException {
+        final Boolean value =  booleanNoIndex.get();
+        return value != null ? value.booleanValue() : false;
+    }
     public byte getByteNoIndex() throws EntityNotFoundException {
         final Byte value =  byteNoIndex.get();
         return value != null ? value.byteValue() : 0;
@@ -174,6 +192,10 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
     public double getDoubleNoIndex() throws EntityNotFoundException {
         final Double value =  doubleNoIndex.get();
         return value != null ? value.doubleValue() : 0.0;
+    }
+    public boolean getBooleanIndex() throws EntityNotFoundException {
+        final Boolean value =  booleanIndex.get();
+        return value != null ? value.booleanValue() : true;
     }
     public byte getByteIndex() throws EntityNotFoundException {
         final Byte value =  byteIndex.get();
@@ -205,6 +227,15 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
     }
 
 
+    public PrimitiveTypeDef setBooleanNoIndex(final boolean value) throws EntityNotFoundException {
+        this.booleanNoIndex.set(Boolean.valueOf(value));
+        return this;
+    }
+
+    public PrimitiveTypeDef removeBooleanNoIndex() throws EntityNotFoundException {
+        booleanNoIndex.remove();
+        return this;
+    }
     public PrimitiveTypeDef setByteNoIndex(final byte value) throws EntityNotFoundException {
         this.byteNoIndex.set(Byte.valueOf(value));
         return this;
@@ -266,6 +297,15 @@ public class PrimitiveTypeDef extends EntityIdBase<PrimitiveTypeDef> {
 
     public PrimitiveTypeDef removeDoubleNoIndex() throws EntityNotFoundException {
         doubleNoIndex.remove();
+        return this;
+    }
+    public PrimitiveTypeDef setBooleanIndex(final boolean value) throws EntityNotFoundException {
+        this.booleanIndex.set(Boolean.valueOf(value));
+        return this;
+    }
+
+    public PrimitiveTypeDef removeBooleanIndex() throws EntityNotFoundException {
+        booleanIndex.remove();
         return this;
     }
     public PrimitiveTypeDef setByteIndex(final byte value) throws EntityNotFoundException {

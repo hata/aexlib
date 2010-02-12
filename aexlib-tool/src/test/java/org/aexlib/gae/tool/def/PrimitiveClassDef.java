@@ -23,13 +23,19 @@ import org.aexlib.gae.tool.anno.KeyTypeValue;
 
 @KeyType(KeyTypeValue.ID)
 public class PrimitiveClassDef {
-    
+
+    Boolean booleanNoIndex;
     Byte byteNoIndex;
     Short shortNoIndex;
     Character charNoIndex;
     Integer intNoIndex;
     Long longNoIndex;
-    
+    Float floatNoIndex;
+    Double doubleNoIndex;
+
+    @Indexable
+    Boolean booleanIndex;
+
     @Indexable
     Byte byteIndex;
 
@@ -45,5 +51,9 @@ public class PrimitiveClassDef {
     @Indexable
     Long longIndex;
 
+    @Indexable
+    Float floatIndex;
 
+    @Indexable
+    Double doubleIndex;
 }

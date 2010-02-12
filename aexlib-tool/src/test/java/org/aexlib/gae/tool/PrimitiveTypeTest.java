@@ -35,6 +35,21 @@ public class PrimitiveTypeTest extends ToolGAEBaseTestCase {
         entity = null;
     }
 
+    public void testGetBooleanNoIndex() throws Exception {
+        assertEquals(false, entity.getBooleanNoIndex());
+        entity.setBooleanNoIndex(true);
+        entity.put();
+        assertEquals(true, entity.getBooleanNoIndex());
+        entity = PrimitiveTypeDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(true, entity.getBooleanNoIndex());
+
+        entity.removeBooleanNoIndex();
+        entity.put();
+        assertEquals(false, entity.getBooleanNoIndex());
+        entity = PrimitiveTypeDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(false, entity.getBooleanNoIndex());
+    }
+
     public void testGetByteNoIndex() throws Exception {
         assertEquals(0, entity.getByteNoIndex());
         entity.setByteNoIndex((byte)1);
@@ -138,6 +153,24 @@ public class PrimitiveTypeTest extends ToolGAEBaseTestCase {
         assertEquals(0.0, entity.getDoubleNoIndex(), 0.1);
         entity = PrimitiveTypeDef.FACTORY.initInstance(entity.getKey());
         assertEquals(0.0, entity.getDoubleNoIndex(), 0.1);
+    }
+
+    public void testGetBooleanIndex() throws Exception {
+        assertEquals(true, entity.getBooleanIndex());
+        entity.setBooleanIndex(false);
+        entity.put();
+        assertEquals(false, entity.getBooleanIndex());
+        entity = PrimitiveTypeDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(false, entity.getBooleanIndex());
+
+        int count = PrimitiveTypeDef.QUERY.query().filter( PrimitiveTypeDef.BOOLEAN_INDEX.equal(false)).countEntities();
+        assertEquals(1, count);
+
+        entity.removeBooleanIndex();
+        entity.put();
+        assertEquals(true, entity.getBooleanIndex());
+        entity = PrimitiveTypeDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(true, entity.getBooleanIndex());
     }
 
     public void testGetByteIndex() throws Exception {
@@ -267,5 +300,4 @@ public class PrimitiveTypeTest extends ToolGAEBaseTestCase {
         entity = PrimitiveTypeDef.FACTORY.initInstance(entity.getKey());
         assertEquals(6.0, entity.getDoubleIndex(), 0.1);
     }
-
 }

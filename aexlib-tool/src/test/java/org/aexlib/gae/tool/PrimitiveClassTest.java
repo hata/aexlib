@@ -36,6 +36,21 @@ public class PrimitiveClassTest extends ToolGAEBaseTestCase {
         entity = null;
     }
 
+    public void testGetBooleanNoIndex() throws Exception {
+        assertNull(entity.getBooleanNoIndex());
+        entity.setBooleanNoIndex(true);
+        entity.put();
+        assertEquals(Boolean.TRUE, entity.getBooleanNoIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(Boolean.TRUE, entity.getBooleanNoIndex());
+        
+        entity.removeBooleanNoIndex();
+        entity.put();
+        assertNull(entity.getBooleanNoIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertNull(entity.getBooleanNoIndex());
+    }
+
     public void testGetByteNoIndex() throws Exception {
         assertNull(entity.getByteNoIndex());
         entity.setByteNoIndex((byte)1);
@@ -109,6 +124,54 @@ public class PrimitiveClassTest extends ToolGAEBaseTestCase {
         assertNull(entity.getLongNoIndex());
         entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
         assertNull(entity.getLongNoIndex());
+    }
+
+    public void testGetFloatNoIndex() throws Exception {
+        assertNull(entity.getFloatNoIndex());
+        entity.setFloatNoIndex(1.0f);
+        entity.put();
+        assertEquals(1.0f, (float)entity.getFloatNoIndex(), 0.1f);
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(1.0f, (float)entity.getFloatNoIndex(), 0.1f);
+
+        entity.removeFloatNoIndex();
+        entity.put();
+        assertNull(entity.getFloatNoIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertNull(entity.getFloatNoIndex());
+    }
+
+    public void testGetDoubleNoIndex() throws Exception {
+        assertNull(entity.getDoubleNoIndex());
+        entity.setDoubleNoIndex(1.0);
+        entity.put();
+        assertEquals(1.0, (double)entity.getDoubleNoIndex(), 0.1);
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(1.0, (double)entity.getDoubleNoIndex(), 0.1);
+
+        entity.removeDoubleNoIndex();
+        entity.put();
+        assertNull(entity.getDoubleNoIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertNull(entity.getDoubleNoIndex());
+    }
+
+    public void testGetBooleanIndex() throws Exception {
+        assertNull(entity.getBooleanIndex());
+        entity.setBooleanIndex(true);
+        entity.put();
+        assertEquals(Boolean.TRUE, entity.getBooleanIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(Boolean.TRUE, entity.getBooleanIndex());
+
+        int count = org.aexlib.gae.tool.sample.PrimitiveClassDef.QUERY.query().filter( org.aexlib.gae.tool.sample.PrimitiveClassDef.BOOLEAN_INDEX.equal(Boolean.TRUE)).countEntities();
+        assertEquals(1, count);
+        
+        entity.removeBooleanIndex();
+        entity.put();
+        assertNull(entity.getBooleanIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertNull(entity.getBooleanIndex());
     }
 
     public void testGetByteIndex() throws Exception {
@@ -201,4 +264,39 @@ public class PrimitiveClassTest extends ToolGAEBaseTestCase {
         assertNull(entity.getLongIndex());
     }
 
+    public void testGetFloatIndex() throws Exception {
+        assertNull(entity.getFloatIndex());
+        entity.setFloatIndex(1.0f);
+        entity.put();
+        assertEquals(1.0f, (float)entity.getFloatIndex(), 0.1f);
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(1.0f, (float)entity.getFloatIndex(), 0.1f);
+
+        int count = org.aexlib.gae.tool.sample.PrimitiveClassDef.QUERY.query().filter( org.aexlib.gae.tool.sample.PrimitiveClassDef.FLOAT_INDEX.equal((float)1.0f)).countEntities();
+        assertEquals(1, count);
+
+        entity.removeFloatIndex();
+        entity.put();
+        assertNull(entity.getFloatIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertNull(entity.getFloatIndex());
+    }
+
+    public void testGetDoubleIndex() throws Exception {
+        assertNull(entity.getDoubleIndex());
+        entity.setDoubleIndex(1.0);
+        entity.put();
+        assertEquals(1.0, (double)entity.getDoubleIndex(), 0.1);
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertEquals(1.0, (double)entity.getDoubleIndex(), 0.1);
+
+        int count = org.aexlib.gae.tool.sample.PrimitiveClassDef.QUERY.query().filter( org.aexlib.gae.tool.sample.PrimitiveClassDef.DOUBLE_INDEX.equal(1.0)).countEntities();
+        assertEquals(1, count);
+
+        entity.removeDoubleIndex();
+        entity.put();
+        assertNull(entity.getDoubleIndex());
+        entity = org.aexlib.gae.tool.sample.PrimitiveClassDef.FACTORY.initInstance(entity.getKey());
+        assertNull(entity.getDoubleIndex());
+    }
 }

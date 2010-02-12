@@ -20,6 +20,7 @@ package org.aexlib.gae.tool;
 import java.io.File;
 import java.io.IOException;
 
+import org.aexlib.gae.tool.def.ArraySample;
 import org.aexlib.gae.tool.def.NoVersionSample;
 import org.aexlib.gae.tool.def.ParentSample;
 import org.aexlib.gae.tool.def.PrimitiveClassDef;
@@ -51,7 +52,8 @@ public class SampleEntityBaseCodeGenerator {
                 Sample.class,
                 NoVersionSample.class,
                 PrimitiveClassDef.class,
-                PrimitiveTypeDef.class
+                PrimitiveTypeDef.class,
+                ArraySample.class
                 };
     }
 
