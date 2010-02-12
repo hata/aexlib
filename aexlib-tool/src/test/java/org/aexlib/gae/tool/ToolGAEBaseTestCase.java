@@ -19,7 +19,6 @@ package org.aexlib.gae.tool;
 
 import java.io.File;
 
-import org.aexlib.gae.TestEnvironment;
 
 import com.google.appengine.api.datastore.dev.LocalDatastoreService;
 import com.google.appengine.tools.development.ApiProxyLocalImpl;

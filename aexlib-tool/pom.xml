@@ -2,11 +2,18 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.aexlib</groupId>
+    <artifactId>aexlib</artifactId>
+    <version>${aexlib.version}</version>
+  </parent>
+
   <groupId>org.aexlib</groupId>
   <artifactId>aexlib-tool</artifactId>
-  <version>${aexlib-version}</version>
+  <version>${aexlib.version}</version>
   <name>aexlib-tool</name>
   <url>http://www.aexlib.org</url>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -37,9 +44,30 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-labs</artifactId>
+      <version>${gae.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-stubs</artifactId>
+      <version>${gae.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-local-runtime</artifactId>
+      <version>${gae.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.aexlib</groupId>
       <artifactId>aexlib-datastore</artifactId>
-      <version>${aexlib-version}</version>
+      <version>${aexlib.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -72,7 +100,6 @@
         Specify AppEngine version for your project.
     -->
     <gae.version>1.3.0</gae.version>
-    <aexlib-version>0.1.1-SNAPSHOT</aexlib-version>
   </properties>
 
 </project>

@@ -5,7 +5,7 @@
     <format>zip</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
-  <baseDirectory>aexlib-${aexlib-version}</baseDirectory>
+  <baseDirectory>aexlib-${aexlib.version}</baseDirectory>
   <dependencySets>
     <dependencySet>
       <unpack>false</unpack>

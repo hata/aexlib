@@ -2,11 +2,18 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.aexlib</groupId>
+    <artifactId>aexlib</artifactId>
+    <version>${aexlib.version}</version>
+  </parent>
+
   <groupId>org.aexlib</groupId>
-  <artifactId>aexlib</artifactId>
+  <artifactId>aexlib-project</artifactId>
   <packaging>pom</packaging>
-  <version>0.1.1-SNAPSHOT</version>
-  <name>aexlib</name>
+  <version>${aexlib.version}</version>
+  <name>aexlib-project</name>
   <url>http://www.aexlib.org</url>
 
   <dependencies>
@@ -14,14 +21,14 @@
     <dependency>
       <groupId>org.aexlib</groupId>
       <artifactId>aexlib-datastore</artifactId>
-      <version>${aexlib-version}</version>
+      <version>${aexlib.version}</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.aexlib</groupId>
       <artifactId>aexlib-tool</artifactId>
-      <version>${aexlib-version}</version>
+      <version>${aexlib.version}</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -29,7 +36,7 @@
     <dependency>
       <groupId>org.aexlib</groupId>
       <artifactId>aexlib-sample</artifactId>
-      <version>${aexlib-version}</version>
+      <version>${aexlib.version}</version>
       <scope>provided</scope>
     </dependency>
 -->
@@ -37,7 +44,7 @@
   </dependencies>
 
   <build>
-    <finalName>aexlib-${aexlib-version}</finalName>
+    <finalName>aexlib-${aexlib.version}</finalName>
 
     <plugins>
       <plugin>
@@ -53,7 +60,6 @@
   </build>
 
   <properties>
-    <aexlib-version>0.1.0-SNAPSHOT</aexlib-version>
   </properties>
 
 </project>

@@ -19,6 +19,8 @@ package org.aexlib.gae;
 
 import java.io.File;
 
+import org.aexlib.gae.tool.TestEnvironment;
+
 import com.google.appengine.tools.development.ApiProxyLocalImpl;
 import com.google.apphosting.api.ApiProxy;
 
